@@ -134,6 +134,11 @@ app.use('*', async (c, next) => {
 
 // Middleware: Initialize sandbox for all requests
 app.use('*', async (c, next) => {
+  const url = new URL(c.req.url);
+  if (url.pathname === '/sandbox-health') {
+    return next();
+  }
+
   const options = buildSandboxOptions(c.env);
   const sandbox = getSandbox(c.env.Sandbox, 'moltbot', options);
   c.set('sandbox', sandbox);

@@ -13,7 +13,6 @@ import { moltbotClient } from '@/lib/moltbot-client'
 import {
   deriveFriendlyIdFromKey,
   isMissingGatewayAuth,
-  readError,
   textFromMessage,
 } from './utils'
 import { createOptimisticMessage } from './chat-screen-utils'
@@ -21,6 +20,7 @@ import {
   chatQueryKeys,
   appendHistoryMessage,
   clearHistoryMessages,
+  createSession,
   fetchGatewayStatus,
   removeHistoryMessageByClientId,
   updateHistoryMessageByClientId,
@@ -419,39 +419,6 @@ export function ChatScreen({
     }
   }
 
-  const createSessionForMessage = useCallback(async () => {
-    setCreatingSession(true)
-    try {
-      const res = await fetch('/api/sessions', {
-        method: 'POST',
-        headers: { 'content-type': 'application/json' },
-        body: JSON.stringify({}),
-      })
-      if (!res.ok) throw new Error(await readError(res))
-
-      const data = (await res.json()) as {
-        sessionKey?: string
-        friendlyId?: string
-      }
-
-      const sessionKey =
-        typeof data.sessionKey === 'string' ? data.sessionKey : ''
-      const friendlyId =
-        typeof data.friendlyId === 'string' && data.friendlyId.trim().length > 0
-          ? data.friendlyId.trim()
-          : deriveFriendlyIdFromKey(sessionKey)
-
-      if (!sessionKey || !friendlyId) {
-        throw new Error('Invalid session response')
-      }
-
-      queryClient.invalidateQueries({ queryKey: chatQueryKeys.sessions })
-      return { sessionKey, friendlyId }
-    } finally {
-      setCreatingSession(false)
-    }
-  }, [queryClient])
-
   const send = useCallback(
     (body: string, helpers: ChatComposerHelpers) => {
       console.log(`[ChatScreen] Composer onSubmit: ${body.slice(0, 30)}...`)
@@ -468,7 +435,7 @@ export function ChatScreen({
         setWaitingForResponse(true)
         setPinToTop(true)
 
-        createSessionForMessage()
+        createSession()
           .then(({ sessionKey, friendlyId }) => {
             setRecentSession(friendlyId)
             stashPendingSend({
@@ -515,7 +482,6 @@ export function ChatScreen({
     [
       activeFriendlyId,
       activeSessionKey,
-      createSessionForMessage,
       forcedSessionKey,
       isNewChat,
       navigate,

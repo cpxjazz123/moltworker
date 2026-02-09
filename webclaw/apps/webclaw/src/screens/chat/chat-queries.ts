@@ -43,6 +43,31 @@ export async function fetchHistory(payload: {
   return data
 }
 
+export async function createSession(): Promise<{ sessionKey: string, friendlyId: string }> {
+  // Ensure connected
+  if (!moltbotClient.isConnected) await moltbotClient.connect();
+
+  const friendlyId = crypto.randomUUID()
+  const params = { key: friendlyId }
+
+  // 1) Patch to create
+  const payload = await moltbotClient.request('sessions.patch', params) as { key?: string }
+  const sessionKey = payload?.key || ''
+
+  if (!sessionKey) {
+    throw new Error('Gateway returned invalid session key')
+  }
+
+  // 2) Resolve (best effort)
+  await moltbotClient.request('sessions.resolve', {
+    key: friendlyId,
+    includeUnknown: true,
+    includeGlobal: true,
+  }).catch(() => ({ ok: false }))
+
+  return { sessionKey, friendlyId }
+}
+
 export async function fetchGatewayStatus(): Promise<GatewayStatusResponse> {
   const controller = new AbortController()
   const timeout = window.setTimeout(() => controller.abort(), 15000)

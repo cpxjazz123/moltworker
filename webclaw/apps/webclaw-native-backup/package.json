@@ -1,0 +1,17 @@
+{
+    "name": "webclaw-native-ui",
+    "version": "1.0.0",
+    "scripts": {
+        "dev": "node server.js",
+        "build": "echo 'No build needed' && exit 0",
+        "preview": "vite preview"
+    },
+    "devDependencies": {
+        "vite": "^6.1.0"
+    },
+    "dependencies": {
+        "express": "^5.2.1",
+        "http-proxy": "^1.18.1",
+        "http-proxy-middleware": "^3.0.5"
+    }
+}

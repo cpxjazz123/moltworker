@@ -1,7 +1,7 @@
 import { useCallback, useState } from 'react'
 import { useMutation, useQueryClient } from '@tanstack/react-query'
 import { chatQueryKeys } from '../chat-queries'
-import { readError } from '../utils'
+import { moltbotClient } from '@/lib/moltbot-client'
 
 export type RenameSessionResult = {
   renameSession: (sessionKey: string, newTitle: string) => Promise<void>
@@ -19,15 +19,13 @@ export function useRenameSession(): RenameSessionResult {
       sessionKey: string
       newTitle: string
     }) {
-      const res = await fetch('/api/sessions', {
-        method: 'PATCH',
-        headers: { 'content-type': 'application/json' },
-        body: JSON.stringify({
-          sessionKey: payload.sessionKey,
-          label: payload.newTitle,
-        }),
+      // Ensure connected
+      if (!moltbotClient.isConnected) await moltbotClient.connect();
+
+      await moltbotClient.request('sessions.patch', {
+        key: payload.sessionKey,
+        label: payload.newTitle,
       })
-      if (!res.ok) throw new Error(await readError(res))
       return payload
     },
     onMutate: async function onMutate(payload) {

@@ -7,7 +7,7 @@ import {
 } from '../chat-queries'
 import { clearPendingSendForSession, resetPendingSend } from '../pending-send'
 import { clearSessionDeleted, markSessionDeleted } from '../session-tombstones'
-import { readError } from '../utils'
+import { moltbotClient } from '@/lib/moltbot-client'
 
 export type DeleteSessionResult = {
   deleteSession: (
@@ -30,13 +30,17 @@ export function useDeleteSession(): DeleteSessionResult {
       friendlyId: string
       isActive: boolean
     }) {
-      const query = new URLSearchParams()
-      if (payload.sessionKey) query.set('sessionKey', payload.sessionKey)
-      if (payload.friendlyId) query.set('friendlyId', payload.friendlyId)
-      const res = await fetch(`/api/sessions?${query.toString()}`, {
-        method: 'DELETE',
-      })
-      if (!res.ok) throw new Error(await readError(res))
+      // Ensure connected
+      if (!moltbotClient.isConnected) await moltbotClient.connect();
+
+      // Delete main session
+      await moltbotClient.request('sessions.delete', { key: payload.sessionKey })
+
+      // Delete friendlyId alias if different
+      if (payload.friendlyId && payload.friendlyId !== payload.sessionKey) {
+        await moltbotClient.request('sessions.delete', { key: payload.friendlyId }).catch(() => ({}))
+      }
+
       return payload
     },
     onMutate: async function onMutate(payload) {

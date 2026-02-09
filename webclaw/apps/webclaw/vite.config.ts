@@ -34,11 +34,6 @@ const config = defineConfig({
         secure: false,
         rewrite: (path) => path.replace(/^\/ws/, '/ws'),
       },
-      '/api': {
-        target: 'https://moltbot-sandbox.xsun.workers.dev',
-        changeOrigin: true,
-        secure: false,
-      },
     },
   },
 })

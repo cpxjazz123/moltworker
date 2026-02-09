@@ -119,38 +119,6 @@ if [ -d "$BACKUP_DIR/skills" ] && [ "$(ls -A $BACKUP_DIR/skills 2>/dev/null)" ];
 fi
 
 # ============================================================
-# ONBOARD (only if no config exists yet)
-# ============================================================
-if [ ! -f "$CONFIG_FILE" ]; then
-    echo "No existing config found, running openclaw onboard..."
-
-    AUTH_ARGS=""
-    if [ -n "$CLOUDFLARE_AI_GATEWAY_API_KEY" ] && [ -n "$CF_AI_GATEWAY_ACCOUNT_ID" ] && [ -n "$CF_AI_GATEWAY_GATEWAY_ID" ]; then
-        AUTH_ARGS="--auth-choice cloudflare-ai-gateway-api-key \
-            --cloudflare-ai-gateway-account-id $CF_AI_GATEWAY_ACCOUNT_ID \
-            --cloudflare-ai-gateway-gateway-id $CF_AI_GATEWAY_GATEWAY_ID \
-            --cloudflare-ai-gateway-api-key $CLOUDFLARE_AI_GATEWAY_API_KEY"
-    elif [ -n "$ANTHROPIC_API_KEY" ]; then
-        AUTH_ARGS="--auth-choice apiKey --anthropic-api-key $ANTHROPIC_API_KEY"
-    elif [ -n "$OPENAI_API_KEY" ]; then
-        AUTH_ARGS="--auth-choice openai-api-key --openai-api-key $OPENAI_API_KEY"
-    fi
-
-    openclaw onboard --non-interactive --accept-risk \
-        --mode local \
-        $AUTH_ARGS \
-        --gateway-port 18789 \
-        --gateway-bind lan \
-        --skip-channels \
-        --skip-skills \
-        --skip-health
-
-    echo "Onboard completed"
-else
-    echo "Using existing config"
-fi
-
-# ============================================================
 # PATCH CONFIG (channels, gateway auth, trusted proxies)
 # ============================================================
 # openclaw onboard handles provider/model config, but we need to patch in:
@@ -313,7 +281,8 @@ EOFPATCH
 # ============================================================
 # START GATEWAY
 # ============================================================
-echo "Starting OpenClaw Gateway..."
+# Provoke rebuild: 2026-02-08-v3
+echo "Initializing OpenClaw Sandbox..."
 echo "Gateway will be available on port 18789"
 
 rm -f /tmp/openclaw-gateway.lock 2>/dev/null || true

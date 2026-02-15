@@ -46,5 +46,4 @@ WORKDIR /root/clawd
 # Expose the gateway port
 EXPOSE 18789
 
-# Keep container running - required for Cloudflare Sandbox
-CMD ["tail", "-f", "/dev/null"]
+# Use base image's entrypoint (don't override)

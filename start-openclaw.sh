@@ -54,7 +54,7 @@ echo "Command: openclaw gateway --port 18789 --bind lan --allow-unconfigured --v
 echo ""
 
 # Run OpenClaw gateway directly
-# --dev: Create dev config + workspace if missing
+# --dev: Create dev config + workspace if missing (REQUIRED for first start)
 # --allow-unconfigured: Run without initial setup
 # --bind lan: Listen on all network interfaces (for container access)
 # --port 18789: Gateway port

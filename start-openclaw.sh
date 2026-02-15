@@ -138,6 +138,7 @@ fi
 # ONBOARD (only if no config exists yet)
 # ============================================================
 # Create minimal config to bypass potentially hanging onboard command
+if [ ! -f "$CONFIG_FILE" ]; then
     echo "Creating minimal openclaw.json..."
     echo '{}' > "$CONFIG_FILE"
     sync

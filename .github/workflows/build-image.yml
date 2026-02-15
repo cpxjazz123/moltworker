@@ -11,7 +11,7 @@ on:
 
 env:
   CLOUDFLARE_API_TOKEN: ${{ secrets.CF_API_TOKEN }}
-  CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CF_ACCOUNT_ID }}
+  CLOUDFLARE_ACCOUNT_ID: b5ee1671e54d7c7fcf17e90b9ca7741a
 
 jobs:
   build:
@@ -35,10 +35,7 @@ jobs:
             echo "ERROR: CF_API_TOKEN secret is not set!"
             exit 1
           fi
-          if [ -z "$CLOUDFLARE_ACCOUNT_ID" ]; then
-            echo "ERROR: CF_ACCOUNT_ID secret is not set!"
-            exit 1
-          fi
+          echo "CLOUDFLARE_ACCOUNT_ID: $CLOUDFLARE_ACCOUNT_ID"
           echo "Secrets are configured correctly"
 
       - name: Build and push image with Wrangler
@@ -46,6 +43,7 @@ jobs:
           set -e
           TAG=$(echo ${{ github.sha }} | cut -c1-7)
           echo "Building image with tag: $TAG"
-          npx wrangler containers build . -t moltbot-sandbox-moltbotsandbox:$TAG -p
+          echo "Target account: $CLOUDFLARE_ACCOUNT_ID"
+          npx wrangler containers build . -t moltbot-sandbox-moltbotsandbox:$TAG -p --account-id=$CLOUDFLARE_ACCOUNT_ID
           echo "IMAGE_TAG=$TAG" >> $GITHUB_ENV
           echo "Successfully pushed image: moltbot-sandbox-moltbotsandbox:$TAG"

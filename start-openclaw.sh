@@ -54,12 +54,14 @@ echo "Command: openclaw gateway --port 18789 --bind lan --allow-unconfigured --v
 echo ""
 
 # Run OpenClaw gateway directly
+# --dev: Create dev config + workspace if missing
 # --allow-unconfigured: Run without initial setup
 # --bind lan: Listen on all network interfaces (for container access)
 # --port 18789: Gateway port
 exec /opt/nodejs/bin/openclaw gateway \
     --port 18789 \
     --bind lan \
+    --dev \
     --allow-unconfigured \
     --verbose
 

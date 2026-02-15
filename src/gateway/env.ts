@@ -7,7 +7,12 @@ import type { MoltbotEnv } from '../types';
  * @returns Environment variables record
  */
 export function buildEnvVars(env: MoltbotEnv): Record<string, string> {
-  const envVars: Record<string, string> = {};
+  const envVars: Record<string, string> = {
+    // Prevent interactive prompts and update checks that hang the container
+    CI: 'true',
+    NO_UPDATE_NOTIFIER: '1',
+    NPM_CONFIG_UPDATE_NOTIFIER: 'false',
+  };
 
   // Helper to safely add to record as string
   const add = (key: string, value: any) => {

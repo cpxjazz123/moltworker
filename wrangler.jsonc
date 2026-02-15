@@ -13,7 +13,7 @@
     "DEV_MODE": "true"
   },
   "observability": {
-    "enabled": true,
+    "enabled": false,
   },
   // Static assets for admin UI (built by vite)
   "assets": {

@@ -3,7 +3,7 @@ FROM docker.io/cloudflare/sandbox:0.7.2
 
 # Install Node.js 22 (required by OpenClaw) and rsync (for R2 backup sync)
 # The base image has Node 20, we need to replace it with Node 22
-# Using direct binary download for reliability
+# Install in /opt/nodejs to avoid conflicts with base image
 ENV NODE_VERSION=22.13.1
 RUN ARCH="$(dpkg --print-architecture)" \
     && case "${ARCH}" in \
@@ -12,11 +12,15 @@ RUN ARCH="$(dpkg --print-architecture)" \
          *) echo "Unsupported architecture: ${ARCH}" >&2; exit 1 ;; \
        esac \
     && apt-get update && apt-get install -y xz-utils ca-certificates rsync \
+    && mkdir -p /opt/nodejs \
     && curl -fsSLk https://nodejs.org/dist/v${NODE_VERSION}/node-v${NODE_VERSION}-linux-${NODE_ARCH}.tar.xz -o /tmp/node.tar.xz \
-    && tar -xJf /tmp/node.tar.xz -C /usr/local --strip-components=1 \
+    && tar -xJf /tmp/node.tar.xz -C /opt/nodejs --strip-components=1 \
     && rm /tmp/node.tar.xz \
-    && node --version \
-    && npm --version
+    && /opt/nodejs/bin/node --version \
+    && /opt/nodejs/bin/npm --version
+
+# Add Node 22 to PATH (prepend to override base image's Node 20)
+ENV PATH="/opt/nodejs/bin:${PATH}"
 
 # Install pnpm globally
 RUN npm install -g pnpm
@@ -33,7 +37,7 @@ RUN mkdir -p /root/.openclaw \
     && mkdir -p /root/clawd/skills
 
 # Copy startup script
-# Build cache bust: 2026-02-15-rebuild-v2
+# Build cache bust: 2026-02-15-fix-node-path
 COPY start-openclaw.sh /usr/local/bin/start-openclaw.sh
 RUN chmod +x /usr/local/bin/start-openclaw.sh
 

@@ -26,4 +26,6 @@ jobs:
 
       - name: Build and push image with Wrangler
         run: |
-          npx wrangler containers build . -t moltbot-sandbox-moltbotsandbox:latest -p
+          TAG=$(echo ${{ github.sha }} | cut -c1-7)
+          npx wrangler containers build . -t moltbot-sandbox-moltbotsandbox:$TAG -p
+          echo "IMAGE_TAG=$TAG" >> $GITHUB_ENV

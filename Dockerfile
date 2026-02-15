@@ -1,13 +1,55 @@
-# 测试用最简 Dockerfile - 验证 Cloudflare Sandbox 基础功能
-# 如果这个镜像也不能工作，问题可能在账户配置或 Cloudflare 服务端
+# Cloudflare Sandbox with OpenClaw/Moltbot
+# Based on official sandbox image with minimal modifications
 FROM docker.io/cloudflare/sandbox:0.7.2
 
-# 添加唯一标识符，使每次构建产生不同的镜像 SHA
-# 这样可以确保 wrangler 推送新标签到注册表
+# Build argument for unique image SHA
 ARG BUILD_DATE
 LABEL build_date=$BUILD_DATE
 
-# 不添加任何自定义内容，只使用官方基础镜像
-# 构建后通过 wrangler tail 检查是否有 "Version retrieved: 0.7.2" 日志
-# 如果有，说明基础镜像正常，问题在自定义层
-# 如果没有，说明是账户或服务配置问题
+# Install Node.js 22 in /opt/nodejs (isolated from base image)
+# IMPORTANT: Do NOT override PATH globally - only in startup script
+# This preserves the base image's environment for sandbox-mcp
+ENV NODE_VERSION=22.13.1
+RUN ARCH="$(dpkg --print-architecture)" \
+    && case "${ARCH}" in \
+         amd64) NODE_ARCH="x64" ;; \
+         arm64) NODE_ARCH="arm64" ;; \
+         *) echo "Unsupported architecture: ${ARCH}" >&2; exit 1 ;; \
+       esac \
+    && apt-get update \
+    && apt-get install -y --no-install-recommends xz-utils ca-certificates rsync \
+    && rm -rf /var/lib/apt/lists/* \
+    && mkdir -p /opt/nodejs \
+    && curl -fsSLk https://nodejs.org/dist/v${NODE_VERSION}/node-v${NODE_VERSION}-linux-${NODE_ARCH}.tar.xz -o /tmp/node.tar.xz \
+    && tar -xJf /tmp/node.tar.xz -C /opt/nodejs --strip-components=1 \
+    && rm /tmp/node.tar.xz \
+    && /opt/nodejs/bin/node --version \
+    && /opt/nodejs/bin/npm --version
+
+# Install pnpm and OpenClaw using the new Node.js (temporary PATH override for install only)
+# NOTE: Using absolute path instead of PATH override
+RUN /opt/nodejs/bin/npm install -g pnpm \
+    && /opt/nodejs/bin/npm install -g openclaw@2026.2.3 \
+    && /opt/nodejs/bin/openclaw --version
+
+# Create OpenClaw directories
+RUN mkdir -p /root/.openclaw \
+    && mkdir -p /root/clawd \
+    && mkdir -p /root/clawd/skills
+
+# Copy startup script
+COPY start-openclaw.sh /usr/local/bin/start-openclaw.sh
+RUN chmod +x /usr/local/bin/start-openclaw.sh
+
+# Copy custom skills
+COPY skills/ /root/clawd/skills/
+
+# Set working directory
+WORKDIR /root/clawd
+
+# Expose the gateway port
+EXPOSE 18789
+
+# No CMD - preserve base image's entrypoint for sandbox-mcp
+# The worker will start OpenClaw via sandbox.startProcess()
+# The startup script will set PATH before running openclaw

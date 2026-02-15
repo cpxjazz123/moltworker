@@ -1,12 +1,20 @@
 #!/bin/bash
 # Startup script for OpenClaw in Cloudflare Sandbox
 # This script:
-# 1. Restores config from R2 backup if available
-# 2. Runs openclaw onboard --non-interactive to configure from env vars
-# 3. Patches config for features onboard doesn't cover (channels, gateway auth)
-# 4. Starts the gateway
+# 1. Sets up PATH to use our custom Node.js
+# 2. Restores config from R2 backup if available
+# 3. Runs openclaw onboard --non-interactive to configure from env vars
+# 4. Patches config for features onboard doesn't cover (channels, gateway auth)
+# 5. Starts the gateway
 
 set -e
+
+# Set PATH to use our custom Node.js installation
+# This is done at runtime to avoid affecting the base image's sandbox-mcp process
+export PATH="/opt/nodejs/bin:${PATH}"
+echo "PATH set to: $PATH"
+echo "Node version: $(node --version)"
+echo "npm version: $(npm --version)"
 
 if pgrep -f "openclaw gateway" > /dev/null 2>&1; then
     echo "OpenClaw gateway is already running, exiting."

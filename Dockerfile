@@ -7,3 +7,4 @@ FROM docker.io/cloudflare/sandbox:0.7.2
 # 构建后通过 wrangler tail 检查是否有 "Version retrieved: 0.7.2" 日志
 # 如果有，说明基础镜像正常，问题在自定义层
 # 如果没有，说明是账户或服务配置问题
+# Build trigger: 2026-02-15-225504

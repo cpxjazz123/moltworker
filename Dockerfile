@@ -46,7 +46,8 @@ WORKDIR /root/clawd
 # Expose the gateway port
 EXPOSE 18789
 
-# Use base image's entrypoint with our startup script as CMD
-# The /sandbox binary is the entrypoint in the base image
+# Explicitly set the sandbox entrypoint and run startup script as CMD
+# The /sandbox binary runs as PID 1 and manages SDK communication
 # It runs CMD as a child process with proper signal forwarding
+ENTRYPOINT ["/sandbox"]
 CMD ["/usr/local/bin/start-openclaw.sh"]

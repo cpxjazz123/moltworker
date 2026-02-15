@@ -1,3 +1,4 @@
+# Built via GitHub Actions - trigger rebuild
 FROM docker.io/cloudflare/sandbox:0.7.2
 
 # Install Node.js 22 (required by OpenClaw) and rsync (for R2 backup sync)

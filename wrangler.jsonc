@@ -49,7 +49,7 @@
   "containers": [
     {
       "class_name": "MoltbotSandbox",
-      "image": "registry.cloudflare.com/b5ee1671e54d7c7fcf17e90b9ca7741a/moltbot-sandbox-moltbotsandbox:bb721c1d",
+      "image": "registry.cloudflare.com/b5ee1671e54d7c7fcf17e90b9ca7741a/moltbot-sandbox-moltbotsandbox:05deb0d",
       "instance_type": "standard",
       "max_instances": 1,
     },

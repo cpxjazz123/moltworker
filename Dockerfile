@@ -1,4 +1,4 @@
-FROM docker.io/cloudflare/sandbox:0.7.0
+FROM docker.io/cloudflare/sandbox:0.7.2
 
 # Install Node.js 22 (required by OpenClaw) and rsync (for R2 backup sync)
 # The base image has Node 20, we need to replace it with Node 22
@@ -32,7 +32,7 @@ RUN mkdir -p /root/.openclaw \
     && mkdir -p /root/clawd/skills
 
 # Copy startup script
-# Build cache bust: 2026-02-08-v2-glm47-fixed
+# Build cache bust: 2026-02-13-debug-rebuild-03
 COPY start-openclaw.sh /usr/local/bin/start-openclaw.sh
 RUN chmod +x /usr/local/bin/start-openclaw.sh
 

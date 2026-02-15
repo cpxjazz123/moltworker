@@ -91,8 +91,18 @@ adminApi.post('/devices/:requestId/approve', async (c) => {
   }
 
   try {
-    // Ensure moltbot is running first
-    await ensureMoltbotGateway(sandbox, c.env);
+    // Check if gateway is already running - don't wait for cold start
+    const existingProcess = await findExistingMoltbotProcess(sandbox);
+    if (!existingProcess || existingProcess.status !== 'running') {
+      return c.json(
+        {
+          success: false,
+          error: 'Gateway is not running yet. Please wait for the gateway to start before approving devices.',
+          hint: 'Refresh the page in a few moments and try again.',
+        },
+        503,
+      );
+    }
 
     // Run OpenClaw CLI to approve the device
     const token = c.env.MOLTBOT_GATEWAY_TOKEN;
@@ -127,8 +137,17 @@ adminApi.post('/devices/approve-all', async (c) => {
   const sandbox = c.get('sandbox');
 
   try {
-    // Ensure moltbot is running first
-    await ensureMoltbotGateway(sandbox, c.env);
+    // Check if gateway is already running - don't wait for cold start
+    const existingProcess = await findExistingMoltbotProcess(sandbox);
+    if (!existingProcess || existingProcess.status !== 'running') {
+      return c.json(
+        {
+          error: 'Gateway is not running yet. Please wait for the gateway to start before approving devices.',
+          hint: 'Refresh the page in a few moments and try again.',
+        },
+        503,
+      );
+    }
 
     // First, get the list of pending devices
     const token = c.env.MOLTBOT_GATEWAY_TOKEN;
@@ -154,7 +173,7 @@ adminApi.post('/devices/approve-all', async (c) => {
     }
 
     if (pending.length === 0) {
-      return c.json({ approved: [], message: 'No pending devices to approve' });
+      return c.json({ approved: [], failed: [], message: 'No pending devices to approve' });
     }
 
     // Approve each pending device
@@ -244,6 +263,59 @@ adminApi.get('/storage', async (c) => {
   });
 });
 
+// POST /api/admin/storage/clear - Clear R2 backup to force fresh gateway initialization
+adminApi.post('/storage/clear', async (c) => {
+  const sandbox = c.get('sandbox');
+
+  try {
+    // Check if R2 is configured
+    const hasCredentials = !!(
+      c.env.R2_ACCESS_KEY_ID &&
+      c.env.R2_SECRET_ACCESS_KEY &&
+      c.env.CF_ACCOUNT_ID
+    );
+
+    if (!hasCredentials) {
+      return c.json(
+        {
+          success: false,
+          error: 'R2 storage is not configured',
+        },
+        400,
+      );
+    }
+
+    // Mount R2 if not already mounted
+    await mountR2Storage(sandbox, c.env);
+
+    // Clear the backup directory
+    const clearProc = await sandbox.startProcess(
+      `rm -rf ${R2_MOUNT_PATH}/openclaw ${R2_MOUNT_PATH}/clawdbot ${R2_MOUNT_PATH}/workspace ${R2_MOUNT_PATH}/skills ${R2_MOUNT_PATH}/.last-sync ${R2_MOUNT_PATH}/clawdbot.json`,
+    );
+    await waitForProcess(clearProc, 10000);
+
+    const logs = await clearProc.getLogs();
+    if (clearProc.exitCode !== 0) {
+      return c.json(
+        {
+          success: false,
+          error: 'Failed to clear R2 backup',
+          details: logs.stderr,
+        },
+        500,
+      );
+    }
+
+    return c.json({
+      success: true,
+      message: 'R2 backup cleared successfully. Gateway will reinitialize on next restart.',
+    });
+  } catch (error) {
+    const errorMessage = error instanceof Error ? error.message : 'Unknown error';
+    return c.json({ success: false, error: errorMessage }, 500);
+  }
+});
+
 // POST /api/admin/storage/sync - Trigger a manual sync to R2
 adminApi.post('/storage/sync', async (c) => {
   const sandbox = c.get('sandbox');
@@ -266,6 +338,39 @@ adminApi.post('/storage/sync', async (c) => {
       },
       status,
     );
+  }
+});
+
+// POST /api/admin/gateway/reset-config - Delete gateway config to force fresh initialization
+adminApi.post('/gateway/reset-config', async (c) => {
+  const sandbox = c.get('sandbox');
+
+  try {
+    // Delete the gateway configuration file
+    const deleteProc = await sandbox.startProcess(
+      'rm -f /root/.openclaw/openclaw.json /root/.openclaw/.last-sync',
+    );
+    await waitForProcess(deleteProc, 5000);
+
+    const logs = await deleteProc.getLogs();
+    if (deleteProc.exitCode !== 0) {
+      return c.json(
+        {
+          success: false,
+          error: 'Failed to delete config file',
+          details: logs.stderr,
+        },
+        500,
+      );
+    }
+
+    return c.json({
+      success: true,
+      message: 'Gateway configuration deleted. Restart the gateway to reinitialize.',
+    });
+  } catch (error) {
+    const errorMessage = error instanceof Error ? error.message : 'Unknown error';
+    return c.json({ success: false, error: errorMessage }, 500);
   }
 });
 

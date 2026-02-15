@@ -9,46 +9,47 @@ import type { MoltbotEnv } from '../types';
 export function buildEnvVars(env: MoltbotEnv): Record<string, string> {
   const envVars: Record<string, string> = {};
 
+  // Helper to safely add to record as string
+  const add = (key: string, value: any) => {
+    if (value !== undefined && value !== null) {
+      envVars[key] = String(value);
+    }
+  };
+
   // Cloudflare AI Gateway configuration (new native provider)
-  if (env.CLOUDFLARE_AI_GATEWAY_API_KEY) {
-    envVars.CLOUDFLARE_AI_GATEWAY_API_KEY = env.CLOUDFLARE_AI_GATEWAY_API_KEY;
-  }
-  if (env.CF_AI_GATEWAY_ACCOUNT_ID) {
-    envVars.CF_AI_GATEWAY_ACCOUNT_ID = env.CF_AI_GATEWAY_ACCOUNT_ID;
-  }
-  if (env.CF_AI_GATEWAY_GATEWAY_ID) {
-    envVars.CF_AI_GATEWAY_GATEWAY_ID = env.CF_AI_GATEWAY_GATEWAY_ID;
-  }
+  add('CLOUDFLARE_AI_GATEWAY_API_KEY', env.CLOUDFLARE_AI_GATEWAY_API_KEY);
+  add('CF_AI_GATEWAY_ACCOUNT_ID', env.CF_AI_GATEWAY_ACCOUNT_ID);
+  add('CF_AI_GATEWAY_GATEWAY_ID', env.CF_AI_GATEWAY_GATEWAY_ID);
 
   // Direct provider keys
-  if (env.ANTHROPIC_API_KEY) envVars.ANTHROPIC_API_KEY = env.ANTHROPIC_API_KEY;
-  if (env.OPENAI_API_KEY) envVars.OPENAI_API_KEY = env.OPENAI_API_KEY;
+  add('ANTHROPIC_API_KEY', env.ANTHROPIC_API_KEY);
+  add('OPENAI_API_KEY', env.OPENAI_API_KEY);
 
   // Legacy AI Gateway support: AI_GATEWAY_BASE_URL + AI_GATEWAY_API_KEY
   // When set, these override direct keys for backward compatibility
   if (env.AI_GATEWAY_API_KEY && env.AI_GATEWAY_BASE_URL) {
-    const normalizedBaseUrl = env.AI_GATEWAY_BASE_URL.replace(/\/+$/, '');
+    const normalizedBaseUrl = String(env.AI_GATEWAY_BASE_URL).replace(/\/+$/, '');
     envVars.AI_GATEWAY_BASE_URL = normalizedBaseUrl;
     // Legacy path routes through Anthropic base URL
     envVars.ANTHROPIC_BASE_URL = normalizedBaseUrl;
-    envVars.ANTHROPIC_API_KEY = env.AI_GATEWAY_API_KEY;
+    envVars.ANTHROPIC_API_KEY = String(env.AI_GATEWAY_API_KEY);
   } else if (env.ANTHROPIC_BASE_URL) {
-    envVars.ANTHROPIC_BASE_URL = env.ANTHROPIC_BASE_URL;
+    add('ANTHROPIC_BASE_URL', env.ANTHROPIC_BASE_URL);
   }
 
   // Map MOLTBOT_GATEWAY_TOKEN to OPENCLAW_GATEWAY_TOKEN (container expects this name)
-  if (env.MOLTBOT_GATEWAY_TOKEN) envVars.OPENCLAW_GATEWAY_TOKEN = env.MOLTBOT_GATEWAY_TOKEN;
-  if (env.DEV_MODE) envVars.OPENCLAW_DEV_MODE = env.DEV_MODE;
-  if (env.TELEGRAM_BOT_TOKEN) envVars.TELEGRAM_BOT_TOKEN = env.TELEGRAM_BOT_TOKEN;
-  if (env.TELEGRAM_DM_POLICY) envVars.TELEGRAM_DM_POLICY = env.TELEGRAM_DM_POLICY;
-  if (env.DISCORD_BOT_TOKEN) envVars.DISCORD_BOT_TOKEN = env.DISCORD_BOT_TOKEN;
-  if (env.DISCORD_DM_POLICY) envVars.DISCORD_DM_POLICY = env.DISCORD_DM_POLICY;
-  if (env.SLACK_BOT_TOKEN) envVars.SLACK_BOT_TOKEN = env.SLACK_BOT_TOKEN;
-  if (env.SLACK_APP_TOKEN) envVars.SLACK_APP_TOKEN = env.SLACK_APP_TOKEN;
-  if (env.CF_AI_GATEWAY_MODEL) envVars.CF_AI_GATEWAY_MODEL = env.CF_AI_GATEWAY_MODEL;
-  if (env.CF_ACCOUNT_ID) envVars.CF_ACCOUNT_ID = env.CF_ACCOUNT_ID;
-  if (env.CDP_SECRET) envVars.CDP_SECRET = env.CDP_SECRET;
-  if (env.WORKER_URL) envVars.WORKER_URL = env.WORKER_URL;
+  add('OPENCLAW_GATEWAY_TOKEN', env.MOLTBOT_GATEWAY_TOKEN);
+  add('OPENCLAW_DEV_MODE', env.DEV_MODE);
+  add('TELEGRAM_BOT_TOKEN', env.TELEGRAM_BOT_TOKEN);
+  add('TELEGRAM_DM_POLICY', env.TELEGRAM_DM_POLICY);
+  add('DISCORD_BOT_TOKEN', env.DISCORD_BOT_TOKEN);
+  add('DISCORD_DM_POLICY', env.DISCORD_DM_POLICY);
+  add('SLACK_BOT_TOKEN', env.SLACK_BOT_TOKEN);
+  add('SLACK_APP_TOKEN', env.SLACK_APP_TOKEN);
+  add('CF_AI_GATEWAY_MODEL', env.CF_AI_GATEWAY_MODEL);
+  add('CF_ACCOUNT_ID', env.CF_ACCOUNT_ID);
+  add('CDP_SECRET', env.CDP_SECRET);
+  add('WORKER_URL', env.WORKER_URL);
 
   return envVars;
 }

@@ -26,6 +26,18 @@ mkdir -p "$CONFIG_DIR"
 # RESTORE FROM R2 BACKUP
 # ============================================================
 
+# If MOLTBOT_GATEWAY_TOKEN is not set, we want to use device pairing mode.
+# To ensure a clean start without old token config, skip R2 restore entirely.
+if [ -z "$OPENCLAW_GATEWAY_TOKEN" ]; then
+    echo "No gateway token configured - skipping R2 restore to force fresh initialization with device pairing"
+    rm -f "$CONFIG_FILE" "$CONFIG_DIR/.last-sync" 2>/dev/null || true
+else
+    echo "Gateway token configured - proceeding with R2 restore if available"
+fi
+
+# Only restore from R2 if we have a token configured
+if [ -n "$OPENCLAW_GATEWAY_TOKEN" ]; then
+
 should_restore_from_r2() {
     local R2_SYNC_FILE="$BACKUP_DIR/.last-sync"
     local LOCAL_SYNC_FILE="$CONFIG_DIR/.last-sync"
@@ -118,11 +130,23 @@ if [ -d "$BACKUP_DIR/skills" ] && [ "$(ls -A $BACKUP_DIR/skills 2>/dev/null)" ];
     fi
 fi
 
+fi
+
+# End of R2 restore section
+
 # ============================================================
 # ONBOARD (only if no config exists yet)
 # ============================================================
-if [ ! -f "$CONFIG_FILE" ]; then
-    echo "No existing config found, running openclaw onboard..."
+# Create minimal config to bypass potentially hanging onboard command
+    echo "Creating minimal openclaw.json..."
+    echo '{}' > "$CONFIG_FILE"
+    sync
+fi
+
+# The onboard command can be slow/hang, so we only run it if NO real config exists.
+# {} is considered "not real" enough.
+if [ "$(cat $CONFIG_FILE 2>/dev/null)" == "{}" ]; then
+    echo "No existing real config found, running openclaw onboard (with timeout)..."
 
     AUTH_ARGS=""
     if [ -n "$CLOUDFLARE_AI_GATEWAY_API_KEY" ] && [ -n "$CF_AI_GATEWAY_ACCOUNT_ID" ] && [ -n "$CF_AI_GATEWAY_GATEWAY_ID" ]; then
@@ -136,16 +160,17 @@ if [ ! -f "$CONFIG_FILE" ]; then
         AUTH_ARGS="--auth-choice openai-api-key --openai-api-key $OPENAI_API_KEY"
     fi
 
-    openclaw onboard --non-interactive --accept-risk \
+    # Run onboard with a timeout to prevent infinite hang
+    timeout 60s openclaw onboard --non-interactive --accept-risk \
         --mode local \
         $AUTH_ARGS \
         --gateway-port 18789 \
-        --gateway-bind lan \
+        --gateway-bind 0.0.0.0 \
         --skip-channels \
         --skip-skills \
-        --skip-health
+        --skip-health || echo "Onboard timed out or failed, proceeding with manual patch"
 
-    echo "Onboard completed"
+    echo "Onboard step finished"
 else
     echo "Using existing config"
 fi
@@ -177,7 +202,7 @@ config.channels = config.channels || {};
 // Gateway configuration
 config.gateway.port = 18789;
 config.gateway.mode = 'local';
-config.gateway.trustedProxies = ['10.1.0.0'];
+config.gateway.trustedProxies = ['0.0.0.0/0'];
 
 if (process.env.OPENCLAW_GATEWAY_TOKEN) {
     config.gateway.auth = config.gateway.auth || {};
@@ -249,8 +274,8 @@ if (process.env.ANTHROPIC_API_KEY && !process.env.CF_AI_GATEWAY_MODEL) {
         api: 'anthropic-messages',
         models: [
             {
-                id: 'glm-4.7',
-                name: 'GLM-4.7',
+                id: 'GLM-5',
+                name: 'GLM-5',
                 reasoning: false,
                 input: ['text'],
                 cost: { input: 0, output: 0, cacheRead: 0, cacheWrite: 0 },
@@ -261,8 +286,8 @@ if (process.env.ANTHROPIC_API_KEY && !process.env.CF_AI_GATEWAY_MODEL) {
     };
     config.agents = config.agents || {};
     config.agents.defaults = config.agents.defaults || {};
-    config.agents.defaults.model = { primary: 'anthropic/glm-4.7' };
-    console.log('Direct Anthropic config applied with GLM-4.7 override');
+    config.agents.defaults.model = { primary: 'anthropic/GLM-5' };
+    console.log('Direct Anthropic config applied with GLM-5 override');
 }
 
 // Telegram configuration
@@ -313,6 +338,9 @@ EOFPATCH
 # ============================================================
 # START GATEWAY
 # ============================================================
+echo "Final config content:"
+cat "$CONFIG_FILE" || echo "Config file not readable"
+
 echo "Starting OpenClaw Gateway..."
 echo "Gateway will be available on port 18789"
 
@@ -323,8 +351,8 @@ echo "Dev mode: ${OPENCLAW_DEV_MODE:-false}"
 
 if [ -n "$OPENCLAW_GATEWAY_TOKEN" ]; then
     echo "Starting gateway with token auth..."
-    exec openclaw gateway --port 18789 --verbose --allow-unconfigured --bind lan --token "$OPENCLAW_GATEWAY_TOKEN"
+    exec openclaw gateway --port 18789 --verbose --allow-unconfigured --bind 0.0.0.0 --token "$OPENCLAW_GATEWAY_TOKEN"
 else
     echo "Starting gateway with device pairing (no token)..."
-    exec openclaw gateway --port 18789 --verbose --allow-unconfigured --bind lan
+    exec openclaw gateway --port 18789 --verbose --allow-unconfigured --bind 0.0.0.0
 fi

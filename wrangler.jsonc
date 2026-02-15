@@ -50,7 +50,7 @@
     {
       "class_name": "MoltbotSandbox",
       "image": "registry.cloudflare.com/b5ee1671e54d7c7fcf17e90b9ca7741a/moltbot-sandbox-moltbotsandbox:b239f16",
-      "instance_type": "standard",
+      "instance_type": "standard-1",
       "max_instances": 1,
     },
   ],

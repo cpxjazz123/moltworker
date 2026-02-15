@@ -18,10 +18,21 @@ async function isR2Mounted(sandbox: Sandbox): Promise<boolean> {
     const logs = await proc.getLogs();
     // If stdout has content, the mount exists
     const mounted = !!(logs.stdout && logs.stdout.includes('s3fs'));
-    console.log('isR2Mounted check:', mounted, 'stdout:', logs.stdout?.slice(0, 100));
+
+    // Distinguish between functional success and benign cleanup warnings
+    if (mounted) {
+      console.log('[R2] Bucket is mounted at', R2_MOUNT_PATH);
+    } else if (logs.stderr && !logs.stderr.includes('Failed to delete password file')) {
+      console.log('[R2] Mount check stderr:', logs.stderr);
+    }
+
     return mounted;
   } catch (err) {
-    console.log('isR2Mounted error:', err);
+    // Only log real errors, not benign "no service" or "timeout" during cold start
+    const msg = String(err);
+    if (!msg.includes('500') && !msg.includes('ECONNRESET')) {
+      console.log('[R2] Mount check error:', err);
+    }
     return false;
   }
 }
@@ -51,14 +62,18 @@ export async function mountR2Storage(sandbox: Sandbox, env: MoltbotEnv): Promise
   const bucketName = getR2BucketName(env);
   try {
     console.log('Mounting R2 bucket', bucketName, 'at', R2_MOUNT_PATH);
-    await sandbox.mountBucket(bucketName, R2_MOUNT_PATH, {
-      endpoint: `https://${env.CF_ACCOUNT_ID}.r2.cloudflarestorage.com`,
-      // Pass credentials explicitly since we use R2_* naming instead of AWS_*
-      credentials: {
-        accessKeyId: env.R2_ACCESS_KEY_ID,
-        secretAccessKey: env.R2_SECRET_ACCESS_KEY,
-      },
-    });
+    try {
+      await sandbox.mountBucket(bucketName, R2_MOUNT_PATH, {
+        endpoint: `https://${env.CF_ACCOUNT_ID}.r2.cloudflarestorage.com`,
+        // Pass credentials explicitly since we use R2_* naming instead of AWS_*
+        credentials: {
+          accessKeyId: env.R2_ACCESS_KEY_ID,
+          secretAccessKey: env.R2_SECRET_ACCESS_KEY,
+        },
+      });
+    } catch (e) {
+      throw new Error(`[Sandbox.mountBucket] Failed: ${e}`);
+    }
     console.log('R2 bucket mounted successfully - moltbot data will persist across sessions');
     return true;
   } catch (err) {

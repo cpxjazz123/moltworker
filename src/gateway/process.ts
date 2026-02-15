@@ -1,8 +1,10 @@
-import type { Sandbox, Process } from '@cloudflare/sandbox';
+import type { Sandbox, Process as SandboxProcess } from '@cloudflare/sandbox';
 import type { MoltbotEnv } from '../types';
 import { MOLTBOT_PORT, STARTUP_TIMEOUT_MS } from '../config';
 import { buildEnvVars } from './env';
 import { mountR2Storage } from './r2';
+
+
 
 /**
  * Find an existing OpenClaw gateway process
@@ -10,16 +12,21 @@ import { mountR2Storage } from './r2';
  * @param sandbox - The sandbox instance
  * @returns The process if found and running/starting, null otherwise
  */
-export async function findExistingMoltbotProcess(sandbox: Sandbox): Promise<Process | null> {
+export async function findExistingMoltbotProcess(sandbox: Sandbox): Promise<SandboxProcess | null> {
   try {
-    const processes = await sandbox.listProcesses();
+    let processes: SandboxProcess[];
+    try {
+      processes = await sandbox.listProcesses();
+    } catch (e) {
+      throw new Error(`[Sandbox.listProcesses] Failed: ${e}`);
+    }
+
+    console.log('[Debug] Found processes count:', processes.length);
     for (const proc of processes) {
       // Match gateway process (openclaw gateway or legacy clawdbot gateway)
-      // Don't match CLI commands like "openclaw devices list"
       const isGatewayProcess =
         proc.command.includes('start-openclaw.sh') ||
         proc.command.includes('openclaw gateway') ||
-        // Legacy: match old startup script during transition
         proc.command.includes('start-moltbot.sh') ||
         proc.command.includes('clawdbot gateway');
       const isCliCommand =
@@ -32,12 +39,21 @@ export async function findExistingMoltbotProcess(sandbox: Sandbox): Promise<Proc
       if (isGatewayProcess && !isCliCommand) {
         if (proc.status === 'starting' || proc.status === 'running') {
           return proc;
+        } else {
+          console.log('[Debug] Found gateway process but status is:', proc.status);
         }
       }
     }
   } catch (e) {
-    console.log('Could not list processes:', e);
+    const msg = String(e);
+    console.error('[Gateway] Management API failed to list processes:', msg);
+    // Rethrow with prefix if not already prefixed
+    if (msg.includes('[Sandbox.listProcesses]')) {
+      throw e;
+    }
+    throw new Error(`[findExistingMoltbotProcess] Error: ${msg}`);
   }
+  console.log('[Debug] No running gateway process found');
   return null;
 }
 
@@ -53,13 +69,90 @@ export async function findExistingMoltbotProcess(sandbox: Sandbox): Promise<Proc
  * @param env - Worker environment bindings
  * @returns The running gateway process
  */
-export async function ensureMoltbotGateway(sandbox: Sandbox, env: MoltbotEnv): Promise<Process> {
+// Helper to create a dummy process when API fails but service is up
+function createDummyProcess(): any {
+  return {
+    id: 'dummy-' + Date.now().toString(36),
+    status: 'running',
+    command: 'dummy-gateway',
+    kill: async () => console.log('Dummy kill called'),
+    waitForPort: async () => console.log('Dummy waitForPort called'),
+    getLogs: async () => ({ stdout: '', stderr: '' }),
+    refresh: async () => { },
+  };
+}
+
+export async function ensureMoltbotGateway(sandbox: Sandbox, env: MoltbotEnv): Promise<SandboxProcess> {
+  console.log('[Gateway] ensureMoltbotGateway starting...');
+
+  // Check if gateway is already responding (Fast Path)
+  try {
+    console.log('[Gateway] Attempting fast path ping...');
+    const checkRequest = new Request(`http://localhost:${MOLTBOT_PORT}/sandbox-health`, { method: 'HEAD' });
+
+    let resp;
+    try {
+      resp = await Promise.race([
+        sandbox.containerFetch(checkRequest, MOLTBOT_PORT),
+        new Promise<Response>((_, reject) => setTimeout(() => reject('timeout'), 2000))
+      ]);
+    } catch (e) {
+      throw new Error(`[Sandbox.containerFetch] Failed during fast path: ${e}`);
+    }
+
+    if (resp && resp.status > 0) {
+      console.log('[Gateway] Direct ping succeeded, skipping expensive checks');
+      try {
+        const proc = await Promise.race([
+          findExistingMoltbotProcess(sandbox),
+          new Promise<SandboxProcess | null>((_, reject) => setTimeout(() => reject('timeout'), 1000))
+        ]);
+        if (proc) return proc;
+        console.log('[Gateway] No process found via API, but ping succeeded. Returning dummy process.');
+        return createDummyProcess() as unknown as SandboxProcess;
+      } catch (e) {
+        console.log('[Gateway] Failed to find process via API (or timed out), but ping succeeded. Returning dummy process.', e);
+        return createDummyProcess() as unknown as SandboxProcess;
+      }
+    }
+  } catch (_e) {
+    // Ping failed - only log, don't throw, proceed to standard startup
+    const msg = String(_e);
+    console.log('[Gateway] Fast path ping failed or timed out:', msg);
+    // If it was our specific error, log it more prominently
+    if (msg.includes('[Sandbox.containerFetch]')) {
+      console.error('CRITICAL: Fast path containerFetch failed with:', msg);
+    }
+  }
+
+  // Explicitly start the container if it's not running
+  console.log('[Gateway] Ensuring container is started (sandbox.start)...');
+  try {
+    await sandbox.start();
+    console.log('[Gateway] Container started/checked successfully');
+  } catch (startErr) {
+    const msg = String(startErr);
+    console.log('[Gateway] Container start result/error:', msg);
+    // If it's the "Specific" error we are looking for, wrap it
+    if (msg.includes('Illegal invocation')) {
+      throw new Error(`[Sandbox.start] Illegal invocation detected: ${msg}`);
+    }
+  }
+
   // Mount R2 storage for persistent data (non-blocking if not configured)
-  // R2 is used as a backup - the startup script will restore from it on boot
+  console.log('[Gateway] Mounting R2 storage...');
   await mountR2Storage(sandbox, env);
+  console.log('[Gateway] R2 storage mount finished');
 
   // Check if gateway is already running or starting
-  const existingProcess = await findExistingMoltbotProcess(sandbox);
+  console.log('[Gateway] Checking for existing process...');
+  let existingProcess: SandboxProcess | null = null;
+  try {
+    existingProcess = await findExistingMoltbotProcess(sandbox);
+  } catch (e) {
+    console.log('[Gateway] Management API error during startup:', e);
+  }
+
   if (existingProcess) {
     console.log(
       'Found existing gateway process:',
@@ -68,18 +161,18 @@ export async function ensureMoltbotGateway(sandbox: Sandbox, env: MoltbotEnv): P
       existingProcess.status,
     );
 
-    // Always use full startup timeout - a process can be "running" but not ready yet
-    // (e.g., just started by another concurrent request). Using a shorter timeout
-    // causes race conditions where we kill processes that are still initializing.
     try {
       console.log('Waiting for gateway on port', MOLTBOT_PORT, 'timeout:', STARTUP_TIMEOUT_MS);
-      await existingProcess.waitForPort(MOLTBOT_PORT, { mode: 'tcp', timeout: STARTUP_TIMEOUT_MS });
+      try {
+        await existingProcess.waitForPort(MOLTBOT_PORT, { mode: 'tcp', timeout: STARTUP_TIMEOUT_MS });
+      } catch (e) {
+        throw new Error(`[Process.waitForPort] Failed on existing process: ${e}`);
+      }
+      console.log(`[Gateway] Port ${MOLTBOT_PORT} detected via waitForPort`);
       console.log('Gateway is reachable');
       return existingProcess;
-      // eslint-disable-next-line no-unused-vars
     } catch (_e) {
-      // Timeout waiting for port - process is likely dead or stuck, kill and restart
-      console.log('Existing process not reachable after full timeout, killing and restarting...');
+      console.log('Existing process not reachable after timeout, killing and restarting...', _e);
       try {
         await existingProcess.kill();
       } catch (killError) {
@@ -93,14 +186,15 @@ export async function ensureMoltbotGateway(sandbox: Sandbox, env: MoltbotEnv): P
   const envVars = buildEnvVars(env);
   const command = '/usr/local/bin/start-openclaw.sh';
 
-  console.log('Starting process with command:', command);
-  console.log('Environment vars being passed:', Object.keys(envVars));
-
-  let process: Process;
+  let process: SandboxProcess;
   try {
-    process = await sandbox.startProcess(command, {
-      env: Object.keys(envVars).length > 0 ? envVars : undefined,
-    });
+    try {
+      process = await sandbox.startProcess(command, {
+        env: Object.keys(envVars).length > 0 ? envVars : undefined,
+      });
+    } catch (e) {
+      throw new Error(`[Sandbox.startProcess] Failed to start gateway: ${e}`);
+    }
     console.log('Process started with id:', process.id, 'status:', process.status);
   } catch (startErr) {
     console.error('Failed to start process:', startErr);
@@ -109,30 +203,26 @@ export async function ensureMoltbotGateway(sandbox: Sandbox, env: MoltbotEnv): P
 
   // Wait for the gateway to be ready
   try {
-    console.log('[Gateway] Waiting for OpenClaw gateway to be ready on port', MOLTBOT_PORT);
-    await process.waitForPort(MOLTBOT_PORT, { mode: 'tcp', timeout: STARTUP_TIMEOUT_MS });
-    console.log('[Gateway] OpenClaw gateway is ready!');
-
-    const logs = await process.getLogs();
-    if (logs.stdout) console.log('[Gateway] stdout:', logs.stdout);
-    if (logs.stderr) console.log('[Gateway] stderr:', logs.stderr);
-  } catch (e) {
-    console.error('[Gateway] waitForPort failed:', e);
+    console.log('[Gateway] Waiting for readiness on port', MOLTBOT_PORT);
     try {
-      const logs = await process.getLogs();
-      console.error('[Gateway] startup failed. Stderr:', logs.stderr);
-      console.error('[Gateway] startup failed. Stdout:', logs.stdout);
-      throw new Error(`OpenClaw gateway failed to start. Stderr: ${logs.stderr || '(empty)'}`, {
-        cause: e,
-      });
-    } catch (logErr) {
-      console.error('[Gateway] Failed to get logs:', logErr);
-      throw e;
+      await process.waitForPort(MOLTBOT_PORT, { mode: 'tcp', timeout: STARTUP_TIMEOUT_MS });
+    } catch (e) {
+      // Capture detailed logs for diagnostics
+      let logs = { stdout: 'N/A', stderr: 'N/A' };
+      try {
+        logs = await process.getLogs();
+      } catch (logErr) {
+        console.error('[Gateway] Failed to retrieve logs:', logErr);
+      }
+      console.error('[Gateway] Startup failed. Container logs:', logs.stderr.slice(-1000));
+      throw new Error(`[Gateway.waitForPort] Timed out or failed: ${e}`);
     }
+    console.log(`[Gateway] Port ${MOLTBOT_PORT} detected via waitForPort (new process)`);
+    console.log('[Gateway] Ready!');
+  } catch (e) {
+    console.error('[Gateway] Fatal startup error:', e);
+    throw e;
   }
-
-  // Verify gateway is actually responding
-  console.log('[Gateway] Verifying gateway health...');
 
   return process;
 }

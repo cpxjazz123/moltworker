@@ -57,9 +57,7 @@ function validateRequiredEnv(env: MoltbotEnv): string[] {
   const missing: string[] = [];
   const isTestMode = env.DEV_MODE === 'true' || env.E2E_TEST_MODE === 'true';
 
-  if (!env.MOLTBOT_GATEWAY_TOKEN) {
-    missing.push('MOLTBOT_GATEWAY_TOKEN');
-  }
+  // MOLTBOT_GATEWAY_TOKEN is optional - if not set, device pairing mode is used
 
   // CF Access vars not required in dev/test mode since auth is skipped
   if (!isTestMode) {
@@ -114,6 +112,10 @@ function buildSandboxOptions(env: MoltbotEnv): SandboxOptions {
   return { sleepAfter };
 }
 
+// Global cache for gateway ready state
+const READY_CACHE = new Set<string>();
+const SANDBOX_ID = 'moltbot-v4';
+
 // Main app
 const app = new Hono<AppEnv>();
 
@@ -126,9 +128,6 @@ app.use('*', async (c, next) => {
   const url = new URL(c.req.url);
   const redactedSearch = redactSensitiveParams(url);
   console.log(`[REQ] ${c.req.method} ${url.pathname}${redactedSearch}`);
-  console.log(`[REQ] Has ANTHROPIC_API_KEY: ${!!c.env.ANTHROPIC_API_KEY}`);
-  console.log(`[REQ] DEV_MODE: ${c.env.DEV_MODE}`);
-  console.log(`[REQ] DEBUG_ROUTES: ${c.env.DEBUG_ROUTES}`);
   await next();
 });
 
@@ -139,9 +138,25 @@ app.use('*', async (c, next) => {
     return next();
   }
 
+  // Get persistent sandbox instance
   const options = buildSandboxOptions(c.env);
-  const sandbox = getSandbox(c.env.Sandbox, 'moltbot', options);
+  const sandbox = getSandbox(c.env.Sandbox, SANDBOX_ID, options);
   c.set('sandbox', sandbox);
+
+  // Ensure container is running
+  try {
+    const startTime = Date.now();
+    await sandbox.start();
+    console.log(`[Middleware] Container start/check finished in ${Date.now() - startTime}ms`);
+  } catch (err) {
+    const msg = String(err);
+    if (!msg.includes('already running')) {
+      console.error('[Middleware] Container start failed:', msg);
+      // If it's a fatal start error (not just 'starting'), we might want to clear cache
+      READY_CACHE.delete(SANDBOX_ID);
+    }
+  }
+
   await next();
 });
 
@@ -247,40 +262,53 @@ app.route('/debug', debug);
 // =============================================================================
 
 app.all('*', async (c) => {
+  // Use bound sandbox from context
   const sandbox = c.get('sandbox');
   const request = c.req.raw;
   const url = new URL(request.url);
 
   console.log('[PROXY] Handling request:', url.pathname);
 
-  // Check if gateway is already running
-  const existingProcess = await findExistingMoltbotProcess(sandbox);
-  const isGatewayReady = existingProcess !== null && existingProcess.status === 'running';
-
-  // For browser requests (non-WebSocket, non-API), show loading page if gateway isn't ready
   const isWebSocketRequest = request.headers.get('Upgrade')?.toLowerCase() === 'websocket';
   const acceptsHtml = request.headers.get('Accept')?.includes('text/html');
+  const isPreviouslyReady = READY_CACHE.has(SANDBOX_ID);
 
-  if (!isGatewayReady && !isWebSocketRequest && acceptsHtml) {
-    console.log('[PROXY] Gateway not ready, serving loading page');
-
-    // Start the gateway in the background (don't await)
-    c.executionCtx.waitUntil(
-      ensureMoltbotGateway(sandbox, c.env).catch((err: Error) => {
-        console.error('[PROXY] Background gateway start failed:', err);
-      }),
-    );
-
-    // Return the loading page immediately
-    return c.html(loadingPageHtml);
-  }
-
-  // Ensure moltbot is running (this will wait for startup)
+  // Final Proxy Logic
+  let errorMessage = '';
   try {
-    await ensureMoltbotGateway(sandbox, c.env);
+    // STARTUP LOGIC:
+    // If we aren't "ready", we trigger startup in the background and show the loading page.
+    if (!isPreviouslyReady) {
+      if (acceptsHtml && !isWebSocketRequest) {
+        console.log('[PROXY] Gateway not ready, showing loading page and triggering startup in background...');
+
+        // Use waitUntil to trigger startup without blocking the loading page response
+        c.executionCtx.waitUntil(
+          (async () => {
+            try {
+              await ensureMoltbotGateway(sandbox, c.env);
+              READY_CACHE.add(SANDBOX_ID);
+              console.log('[PROXY] Background startup from catch-all successful.');
+            } catch (e) {
+              console.error('[PROXY] Background startup from catch-all failed:', e);
+            }
+          })()
+        );
+
+        return c.html(loadingPageHtml);
+      }
+
+      // For non-HTML/WS (API calls), we MUST wait for startup or they will fail
+      try {
+        await ensureMoltbotGateway(sandbox, c.env);
+        READY_CACHE.add(SANDBOX_ID);
+      } catch (e) {
+        throw new Error(`[ensureMoltbotGateway fail] ${e}`);
+      }
+    }
   } catch (error) {
-    console.error('[PROXY] Failed to start Moltbot:', error);
-    const errorMessage = error instanceof Error ? error.message : 'Unknown error';
+    console.error('[PROXY] Failed to ensure Moltbot:', error);
+    errorMessage = error instanceof Error ? error.message : 'Unknown error';
 
     let hint = 'Check worker logs with: wrangler tail';
     if (!c.env.ANTHROPIC_API_KEY) {
@@ -297,6 +325,11 @@ app.all('*', async (c) => {
       },
       503,
     );
+  } finally {
+    // If we failed with a "not running" error, clear cache so next request retries
+    if (errorMessage.includes('not running')) {
+      READY_CACHE.delete(SANDBOX_ID);
+    }
   }
 
   // Proxy to Moltbot with WebSocket message interception
@@ -320,7 +353,13 @@ app.all('*', async (c) => {
     }
 
     // Get WebSocket connection to the container
-    const containerResponse = await sandbox.wsConnect(wsRequest, MOLTBOT_PORT);
+    let containerResponse;
+    try {
+      const rawSandbox = getSandbox(c.env.Sandbox, SANDBOX_ID, buildSandboxOptions(c.env));
+      containerResponse = await rawSandbox.wsConnect(wsRequest, MOLTBOT_PORT);
+    } catch (e) {
+      throw new Error(`[Sandbox.wsConnect] Proxy fail: ${e}`);
+    }
     console.log('[WS] wsConnect response status:', containerResponse.status);
 
     // Get the container-side WebSocket
@@ -348,93 +387,54 @@ app.all('*', async (c) => {
     }
 
     // Relay messages from client to container
-    serverWs.addEventListener('message', (event) => {
-      if (debugLogs) {
-        console.log(
-          '[WS] Client -> Container:',
-          typeof event.data,
-          typeof event.data === 'string' ? event.data.slice(0, 200) : '(binary)',
-        );
-      }
+    serverWs.addEventListener('message', (event: any) => {
       if (containerWs.readyState === WebSocket.OPEN) {
         containerWs.send(event.data);
-      } else if (debugLogs) {
-        console.log('[WS] Container not open, readyState:', containerWs.readyState);
       }
     });
 
     // Relay messages from container to client, with error transformation
-    containerWs.addEventListener('message', (event) => {
-      if (debugLogs) {
-        console.log(
-          '[WS] Container -> Client (raw):',
-          typeof event.data,
-          typeof event.data === 'string' ? event.data.slice(0, 500) : '(binary)',
-        );
-      }
+    containerWs.addEventListener('message', (event: any) => {
       let data = event.data;
 
       // Try to intercept and transform error messages
       if (typeof data === 'string') {
         try {
           const parsed = JSON.parse(data);
-          if (debugLogs) {
-            console.log('[WS] Parsed JSON, has error.message:', !!parsed.error?.message);
-          }
           if (parsed.error?.message) {
-            if (debugLogs) {
-              console.log('[WS] Original error.message:', parsed.error.message);
-            }
             parsed.error.message = transformErrorMessage(parsed.error.message, url.host);
-            if (debugLogs) {
-              console.log('[WS] Transformed error.message:', parsed.error.message);
-            }
             data = JSON.stringify(parsed);
           }
         } catch (e) {
-          if (debugLogs) {
-            console.log('[WS] Not JSON or parse error:', e);
-          }
+          // Not JSON
         }
       }
 
       if (serverWs.readyState === WebSocket.OPEN) {
         serverWs.send(data);
-      } else if (debugLogs) {
-        console.log('[WS] Server not open, readyState:', serverWs.readyState);
       }
     });
 
     // Handle close events
-    serverWs.addEventListener('close', (event) => {
-      if (debugLogs) {
-        console.log('[WS] Client closed:', event.code, event.reason);
-      }
+    serverWs.addEventListener('close', (event: any) => {
       containerWs.close(event.code, event.reason);
     });
 
-    containerWs.addEventListener('close', (event) => {
-      if (debugLogs) {
-        console.log('[WS] Container closed:', event.code, event.reason);
-      }
-      // Transform the close reason (truncate to 123 bytes max for WebSocket spec)
+    containerWs.addEventListener('close', (event: any) => {
       let reason = transformErrorMessage(event.reason, url.host);
       if (reason.length > 123) {
         reason = reason.slice(0, 120) + '...';
-      }
-      if (debugLogs) {
-        console.log('[WS] Transformed close reason:', reason);
       }
       serverWs.close(event.code, reason);
     });
 
     // Handle errors
-    serverWs.addEventListener('error', (event) => {
+    serverWs.addEventListener('error', (event: any) => {
       console.error('[WS] Client error:', event);
       containerWs.close(1011, 'Client error');
     });
 
-    containerWs.addEventListener('error', (event) => {
+    containerWs.addEventListener('error', (event: any) => {
       console.error('[WS] Container error:', event);
       serverWs.close(1011, 'Container error');
     });
@@ -449,19 +449,75 @@ app.all('*', async (c) => {
   }
 
   console.log('[HTTP] Proxying:', url.pathname + url.search);
-  const httpResponse = await sandbox.containerFetch(request, MOLTBOT_PORT);
-  console.log('[HTTP] Response status:', httpResponse.status);
 
-  // Add debug header to verify worker handled the request
-  const newHeaders = new Headers(httpResponse.headers);
-  newHeaders.set('X-Worker-Debug', 'proxy-to-moltbot');
-  newHeaders.set('X-Debug-Path', url.pathname);
+  // Recreate request
+  const proxyUrl = new URL(`http://localhost:${MOLTBOT_PORT}${url.pathname}${url.search}`);
 
-  return new Response(httpResponse.body, {
-    status: httpResponse.status,
-    statusText: httpResponse.statusText,
-    headers: newHeaders,
-  });
+  // Clone request to avoid body consumption issues on retry
+  const proxyRequest = new Request(proxyUrl.toString(), request.clone() as Request);
+
+  try {
+    // Re-fetch raw sandbox stub to ensure no property corruption/this context issues
+    const rawSandbox = getSandbox(c.env.Sandbox, SANDBOX_ID, buildSandboxOptions(c.env));
+    let httpResponse = await rawSandbox.containerFetch(proxyRequest, MOLTBOT_PORT);
+    console.log('[HTTP] Response status:', httpResponse.status);
+
+    // If we get the specific "not running" error from the SDK, retry starting and fetching once
+    if (httpResponse.status === 500) {
+      const clonedResponse = httpResponse.clone();
+      const body = await clonedResponse.text();
+      if (body.includes('The container is not running')) {
+        console.warn('[HTTP] Container reported as not running during fetch. Retrying start...');
+        READY_CACHE.delete(SANDBOX_ID);
+
+        await rawSandbox.start();
+        await ensureMoltbotGateway(rawSandbox, c.env);
+        READY_CACHE.add(SANDBOX_ID);
+
+        // Re-cloning again for second attempt
+        const retryRequest = new Request(proxyUrl.toString(), request.clone() as Request);
+        httpResponse = await rawSandbox.containerFetch(retryRequest, MOLTBOT_PORT);
+      }
+    }
+
+    console.log('[HTTP] Response status:', httpResponse.status);
+
+    // Add debug header to verify worker handled the request
+    const newHeaders = new Headers(httpResponse.headers);
+    newHeaders.set('X-Worker-Debug', 'proxy-to-moltbot');
+    newHeaders.set('X-Debug-Path', url.pathname);
+
+    return new Response(httpResponse.body, {
+      status: httpResponse.status,
+      statusText: httpResponse.statusText,
+      headers: newHeaders,
+    });
+  } catch (e) {
+    console.error('[HTTP] Proxy fail:', e);
+    const proxyError = String(e);
+
+    // If proxy fails, try to get gateway logs for debugging
+    let logs = 'Unable to retrieve logs';
+    try {
+      const gProcess = await findExistingMoltbotProcess(sandbox);
+      if (gProcess) {
+        const fullLogs = await gProcess.getLogs();
+        logs = fullLogs.stderr.slice(-2000) || fullLogs.stdout.slice(-2000) || 'Logs are empty';
+      }
+    } catch (logErr) {
+      logs = `Failed to get logs: ${logErr}`;
+    }
+
+    return c.json(
+      {
+        error: 'Error proxying request to container',
+        details: proxyError,
+        container_logs: logs,
+        hint: 'Check if the gateway process crashed or is binding to the wrong address (should be 0.0.0.0).',
+      },
+      502,
+    );
+  }
 });
 
 /**
@@ -474,11 +530,27 @@ async function scheduled(
   _ctx: ExecutionContext,
 ): Promise<void> {
   const options = buildSandboxOptions(env);
-  const sandbox = getSandbox(env.Sandbox, 'moltbot', options);
+  const sandbox = getSandbox(env.Sandbox, SANDBOX_ID, options);
 
-  const gatewayProcess = await findExistingMoltbotProcess(sandbox);
-  if (!gatewayProcess) {
-    console.log('[cron] Gateway not running yet, skipping sync');
+  // Ensure container is running
+  try {
+    await sandbox.start();
+  } catch (err) {
+    const msg = String(err);
+    if (!msg.includes('already running')) {
+      console.error('[cron] Container start fail:', msg);
+      return;
+    }
+  }
+
+  // Ensure gateway is running (Immortality check)
+  console.log('[cron] Ensuring Moltbot is running...');
+  try {
+    const gatewayProcess = await ensureMoltbotGateway(sandbox, env);
+    console.log('[cron] Gateway is alive (id:', gatewayProcess.id, ')');
+    READY_CACHE.add(SANDBOX_ID);
+  } catch (err) {
+    console.error('[cron] Failed to ensure gateway during keep-alive:', err);
     return;
   }
 

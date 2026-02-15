@@ -35,16 +35,29 @@ publicRoutes.get('/api/status', async (c) => {
   const sandbox = c.get('sandbox');
 
   try {
-    const process = await findExistingMoltbotProcess(sandbox);
+    const process = await findExistingMoltbotProcess(sandbox).catch(() => null);
     if (!process) {
+      // Trigger background startup if not running, so the loading page polling starts it
+      console.log('[/api/status] No process found, triggering background startup...');
+      const env = c.env as any; // Cast for convenience in background task
+      c.executionCtx.waitUntil(
+        (async () => {
+          try {
+            const { ensureMoltbotGateway } = await import('../gateway');
+            await ensureMoltbotGateway(sandbox, env);
+            console.log('[/api/status] Background startup successful.');
+          } catch (e) {
+            console.error('[/api/status] Background startup failed:', e);
+          }
+        })(),
+      );
       return c.json({ ok: false, status: 'not_running' });
     }
 
     // Process exists, check if it's actually responding
-    // Try to reach the gateway with a short timeout
     try {
-      await process.waitForPort(18789, { mode: 'tcp', timeout: 5000 });
-      return c.json({ ok: true, status: 'running', processId: process.id });
+      await process.waitForPort(MOLTBOT_PORT, { mode: 'tcp', timeout: 3000 });
+      return c.json({ ok: true, status: 'running', processId: process.id, source: 'mgmt' });
     } catch {
       return c.json({ ok: false, status: 'not_responding', processId: process.id });
     }

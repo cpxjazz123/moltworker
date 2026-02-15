@@ -8,7 +8,9 @@
     "nodejs_compat"
   ],
   "vars": {
-    "ANTHROPIC_BASE_URL": "https://new.aicode.us.com"
+    "ANTHROPIC_BASE_URL": "https://api.z.ai/api/anthropic",
+    "DEBUG_ROUTES": "true",
+    "DEV_MODE": "true"
   },
   "observability": {
     "enabled": false,
@@ -43,11 +45,12 @@
     "command": "npm run build",
   },
   // Container configuration for the Moltbot sandbox
+  // Use existing image from Cloudflare registry to avoid Docker Hub timeout
   "containers": [
     {
       "class_name": "MoltbotSandbox",
-      "image": "./Dockerfile",
-      "instance_type": "standard-1",
+      "image": "registry.cloudflare.com/b5ee1671e54d7c7fcf17e90b9ca7741a/moltbot-sandbox-moltbotsandbox:bb721c1d",
+      "instance_type": "standard",
       "max_instances": 1,
     },
   ],
@@ -77,8 +80,8 @@
   // Cron trigger to sync moltbot data to R2 every 5 minutes
   "triggers": {
     "crons": [
-      "*/5 * * * *"
-    ],
+      "* * * * *"
+    ]
   },
   // Browser Rendering binding for CDP shim
   "browser": {

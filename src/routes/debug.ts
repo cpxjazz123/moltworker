@@ -131,7 +131,9 @@ debug.get('/cli', async (c) => {
   const cmd = c.req.query('cmd') || 'openclaw --help';
 
   try {
-    const proc = await sandbox.startProcess(cmd);
+    const { buildEnvVars } = await import('../gateway/env');
+    const envVars = buildEnvVars(c.env);
+    const proc = await sandbox.startProcess(cmd, { env: envVars });
 
     // Wait longer for command to complete
     let attempts = 0;

@@ -170,7 +170,7 @@ if [ "$(cat $CONFIG_FILE 2>/dev/null)" == "{}" ]; then
     fi
 
     # Run onboard with a timeout to prevent infinite hang
-    timeout 60s openclaw onboard --non-interactive --accept-risk \
+    timeout 60s /opt/nodejs/bin/openclaw onboard --non-interactive --accept-risk \
         --mode local \
         $AUTH_ARGS \
         --gateway-port 18789 \
@@ -360,8 +360,8 @@ echo "Dev mode: ${OPENCLAW_DEV_MODE:-false}"
 
 if [ -n "$OPENCLAW_GATEWAY_TOKEN" ]; then
     echo "Starting gateway with token auth..."
-    exec openclaw gateway --port 18789 --verbose --allow-unconfigured --bind 0.0.0.0 --token "$OPENCLAW_GATEWAY_TOKEN"
+    exec /opt/nodejs/bin/openclaw gateway --port 18789 --verbose --allow-unconfigured --bind 0.0.0.0 --token "$OPENCLAW_GATEWAY_TOKEN"
 else
     echo "Starting gateway with device pairing (no token)..."
-    exec openclaw gateway --port 18789 --verbose --allow-unconfigured --bind 0.0.0.0
+    exec /opt/nodejs/bin/openclaw gateway --port 18789 --verbose --allow-unconfigured --bind 0.0.0.0
 fi

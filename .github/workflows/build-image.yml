@@ -21,11 +21,31 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v4
 
+      - name: Check Docker
+        run: |
+          docker --version
+          docker info
+
       - name: Install Wrangler
         run: npm install -g wrangler@latest
 
+      - name: Verify Secrets
+        run: |
+          if [ -z "$CLOUDFLARE_API_TOKEN" ]; then
+            echo "ERROR: CF_API_TOKEN secret is not set!"
+            exit 1
+          fi
+          if [ -z "$CLOUDFLARE_ACCOUNT_ID" ]; then
+            echo "ERROR: CF_ACCOUNT_ID secret is not set!"
+            exit 1
+          fi
+          echo "Secrets are configured correctly"
+
       - name: Build and push image with Wrangler
         run: |
+          set -e
           TAG=$(echo ${{ github.sha }} | cut -c1-7)
+          echo "Building image with tag: $TAG"
           npx wrangler containers build . -t moltbot-sandbox-moltbotsandbox:$TAG -p
           echo "IMAGE_TAG=$TAG" >> $GITHUB_ENV
+          echo "Successfully pushed image: moltbot-sandbox-moltbotsandbox:$TAG"

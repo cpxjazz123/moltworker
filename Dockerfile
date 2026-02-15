@@ -37,7 +37,7 @@ RUN mkdir -p /root/.openclaw \
     && mkdir -p /root/clawd/skills
 
 # Copy startup script
-# Build cache bust: 2026-02-15-fix-v3
+# Build cache bust: 2026-02-15-no-cmd
 COPY start-openclaw.sh /usr/local/bin/start-openclaw.sh
 RUN chmod +x /usr/local/bin/start-openclaw.sh
 
@@ -50,6 +50,5 @@ WORKDIR /root/clawd
 # Expose the gateway port
 EXPOSE 18789
 
-# Use the base image's default entrypoint (which handles /sandbox)
-# and run our startup script as the command
-CMD ["/usr/local/bin/start-openclaw.sh"]
+# No CMD - let the worker start the process via sandbox.startProcess()
+# This preserves the base image's default behavior for SDK communication

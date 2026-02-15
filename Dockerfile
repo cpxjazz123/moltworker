@@ -1,4 +1,4 @@
-# Rebuild: remove test workflow and fix entrypoint
+# Rebuild: fix Cloudflare registry authentication
 FROM docker.io/cloudflare/sandbox:0.7.2
 
 # Install Node.js 22 (required by OpenClaw) and rsync (for R2 backup sync)

@@ -26,11 +26,11 @@ RUN ARCH="$(dpkg --print-architecture)" \
     && /opt/nodejs/bin/node --version \
     && /opt/nodejs/bin/npm --version
 
-# Install pnpm and OpenClaw using the new Node.js (temporary PATH override for install only)
-# NOTE: Using absolute path instead of PATH override
-RUN /opt/nodejs/bin/npm install -g pnpm \
-    && /opt/nodejs/bin/npm install -g openclaw@2026.2.3 \
-    && /opt/nodejs/bin/openclaw --version
+# Install pnpm and OpenClaw using the new Node.js
+# Must use env to set PATH for npm to find the correct node
+RUN env PATH="/opt/nodejs/bin:$PATH" npm install -g pnpm \
+    && env PATH="/opt/nodejs/bin:$PATH" npm install -g openclaw@2026.2.3 \
+    && env PATH="/opt/nodejs/bin:$PATH" openclaw --version
 
 # Create OpenClaw directories
 RUN mkdir -p /root/.openclaw \

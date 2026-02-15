@@ -10,48 +10,20 @@ on:
       - 'skills/**'
 
 env:
-  REGISTRY: registry.cloudflare.com
-  IMAGE_NAME: moltbot-sandbox-moltbotsandbox
+  CLOUDFLARE_API_TOKEN: ${{ secrets.CF_API_TOKEN }}
+  CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CF_ACCOUNT_ID }}
 
 jobs:
   build:
     runs-on: ubuntu-latest
-    permissions:
-      contents: read
-      packages: write
-    
+
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
-      
-      - name: Set up Docker Buildx
-        uses: docker/setup-buildx-action@v3
-      
+
       - name: Install Wrangler
         run: npm install -g wrangler@latest
-
-      - name: Login to Cloudflare
-        run: echo "${{ secrets.CF_API_TOKEN }}" | wrangler login --cloudflare-api-token
 
       - name: Build and push image with Wrangler
         run: |
           npx wrangler containers build . -t moltbot-sandbox-moltbotsandbox:latest -p
-      
-      - name: Extract metadata
-        id: meta
-        uses: docker/metadata-action@v5
-        with:
-          images: ${{ env.REGISTRY }}/b5ee1671e54d7c7fcf17e90b9ca7741a/${{ env.IMAGE_NAME }}
-          tags: |
-            type=raw,value=latest
-            type=sha,prefix=
-      
-      - name: Build and push Docker image
-        uses: docker/build-push-action@v5
-        with:
-          context: .
-          push: true
-          tags: ${{ steps.meta.outputs.tags }}
-          labels: ${{ steps.meta.outputs.labels }}
-          cache-from: type=gha
-          cache-to: type=gha,mode=max

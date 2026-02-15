@@ -31,10 +31,9 @@ RUN ARCH="$(dpkg --print-architecture)" \
 RUN env PATH="/opt/nodejs/bin:$PATH" npm install -g pnpm \
     && env PATH="/opt/nodejs/bin:$PATH" npm install -g openclaw@2026.2.3
 
-# Verify OpenClaw installation and create symlink if needed
-RUN ls -la /opt/nodejs/bin/ | grep openclaw || echo "openclaw not found in /opt/nodejs/bin" \
-    && ls -la /opt/nodejs/lib/node_modules/openclaw/bin/ 2>/dev/null || echo "no bin dir" \
-    && /opt/nodejs/bin/node /opt/nodejs/lib/node_modules/openclaw/bin/openclaw.mjs --version || echo "Failed to run openclaw" \
+# Verify OpenClaw installation
+RUN ls -la /opt/nodejs/bin/openclaw \
+    && /opt/nodejs/bin/node /opt/nodejs/bin/openclaw --version \
     && echo "OpenClaw installation verified"
 
 # Create OpenClaw directories

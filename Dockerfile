@@ -44,3 +44,7 @@ WORKDIR /root/clawd
 
 # Expose the gateway port
 EXPOSE 18789
+
+# Keep container running by using sleep as entrypoint
+# This is required for Cloudflare Sandbox containers
+ENTRYPOINT ["sleep", "infinity"]

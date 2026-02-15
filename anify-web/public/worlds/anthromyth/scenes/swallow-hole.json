@@ -1,0 +1,49 @@
+{
+  "id": "swallow-hole",
+  "name": "石洼落",
+  "description": "安索弥斯郊区的边境村落",
+  "splatUrl": "/assets/scenes/swallow-hole.splat",
+  "spawnPosition": { "x": 0, "y": 0, "z": 5 },
+  "spawnRotation": 0,
+  "floorY": 0,
+  "cameraHeight": 0.88,
+  "groundY": -0.63,
+  "walls": [],
+  "interactionPoints": [
+    {
+      "id": "fenne-location",
+      "name": "芬恩",
+      "position": { "x": 3, "y": 0, "z": -2 },
+      "radius": 2,
+      "icon": "👤",
+      "action": {
+        "type": "dialogue",
+        "target": "fenne-main"
+      }
+    },
+    {
+      "id": "village-shop",
+      "name": "村落商店",
+      "position": { "x": -5, "y": 0, "z": 0 },
+      "radius": 2,
+      "icon": "🛒",
+      "action": {
+        "type": "panel",
+        "panel": "shop"
+      }
+    },
+    {
+      "id": "village-exit",
+      "name": "村口",
+      "position": { "x": 0, "y": 0, "z": -10 },
+      "radius": 3,
+      "icon": "🚪",
+      "action": {
+        "type": "open-map",
+        "canTravel": true
+      }
+    }
+  ],
+  "ambientLight": 0.8,
+  "skybox": "daylight"
+}

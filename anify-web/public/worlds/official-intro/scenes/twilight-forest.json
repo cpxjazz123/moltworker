@@ -1,0 +1,119 @@
+{
+  "id": "twilight-forest",
+  "name": "暮光森林",
+  "description": "神秘的古老森林，微光透过树叶洒落",
+  "splatUrl": "https://oss.anify.ai/gs/8e89431f-2b32-4000-bd98-d33607486863_ceramic.spz",
+  "spawnPosition": { "x": 0, "y": 0, "z": 0 },
+  "spawnRotation": 0,
+  "floorY": -2,
+  "cameraHeight": 0.88,
+  "groundY": -0.63,
+  "walls": [
+    {
+      "start": { "x": -0.4295, "y": 0, "z": 1.3738 },
+      "end": { "x": -1.8300, "y": 0, "z": 1.8668 },
+      "height": 3
+    },
+    {
+      "start": { "x": -1.8300, "y": 0, "z": 1.8668 },
+      "end": { "x": -2.0637, "y": 0, "z": 0.6840 },
+      "height": 3
+    },
+    {
+      "start": { "x": -2.0637, "y": 0, "z": 0.6840 },
+      "end": { "x": -1.5212, "y": 0, "z": 0.4631 },
+      "height": 3
+    },
+    {
+      "start": { "x": -1.5212, "y": 0, "z": 0.4631 },
+      "end": { "x": -0.9943, "y": 0, "z": -1.6087 },
+      "height": 3
+    },
+    {
+      "start": { "x": -0.9943, "y": 0, "z": -1.6087 },
+      "end": { "x": -0.9276, "y": 0, "z": -4.1737 },
+      "height": 3
+    },
+    {
+      "start": { "x": -0.9276, "y": 0, "z": -4.1737 },
+      "end": { "x": -1.2541, "y": 0, "z": -5.1885 },
+      "height": 3
+    },
+    {
+      "start": { "x": -1.2541, "y": 0, "z": -5.1885 },
+      "end": { "x": -0.1917, "y": 0, "z": -6.0808 },
+      "height": 3
+    },
+    {
+      "start": { "x": -0.1917, "y": 0, "z": -6.0808 },
+      "end": { "x": 0.5248, "y": 0, "z": -4.8890 },
+      "height": 3
+    },
+    {
+      "start": { "x": 0.5248, "y": 0, "z": -4.8890 },
+      "end": { "x": 0.5094, "y": 0, "z": -3.4091 },
+      "height": 3
+    },
+    {
+      "start": { "x": 0.5094, "y": 0, "z": -3.4091 },
+      "end": { "x": 1.3394, "y": 0, "z": -0.2686 },
+      "height": 3
+    },
+    {
+      "start": { "x": 1.3394, "y": 0, "z": -0.2686 },
+      "end": { "x": 2.4402, "y": 0, "z": 1.6947 },
+      "height": 3
+    },
+    {
+      "start": { "x": 2.4402, "y": 0, "z": 1.6947 },
+      "end": { "x": 1.1947, "y": 0, "z": 2.7009 },
+      "height": 3
+    },
+    {
+      "start": { "x": 1.1947, "y": 0, "z": 2.7009 },
+      "end": { "x": -0.4295, "y": 0, "z": 1.3738 },
+      "height": 3
+    }
+  ],
+  "interactionPoints": [
+    {
+      "id": "iris-location",
+      "name": "Iris",
+      "position": { "x": 0.1125, "y": -0.3881, "z": -0.4974 },
+      "radius": 1,
+      "icon": "👤",
+      "imageUrl": "/Character_sample.png",
+      "imageScale": 0.5,
+      "action": {
+        "type": "dialogue",
+        "target": "iris-tutorial"
+      }
+    },
+    {
+      "id": "forest-exit",
+      "name": "森林出口",
+      "position": { "x": -2.0852, "y": -0.2841, "z": 0.4025 },
+      "radius": 1.5,
+      "icon": "🚪",
+      "displayType": "navigation",
+      "action": {
+        "type": "open-map",
+        "canTravel": true
+      }
+    },
+    {
+      "id": "hidden-treasure",
+      "name": "隐藏宝箱",
+      "position": { "x": 0.3, "y": -0.3881, "z": -3.5 },
+      "radius": 1.2,
+      "icon": "💎",
+      "displayType": "treasure",
+      "action": {
+        "type": "dialogue",
+        "target": "treasure-found"
+      }
+    }
+  ],
+  "ambientLight": 0.6,
+  "skybox": "twilight"
+}

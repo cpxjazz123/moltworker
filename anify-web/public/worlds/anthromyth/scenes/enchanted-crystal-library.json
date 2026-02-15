@@ -1,0 +1,48 @@
+{
+  "id": "enchanted-crystal-library",
+  "name": "魔法水晶图书馆",
+  "description": "充满魔力的水晶图书馆，藏有无数珍贵典籍",
+  "splatUrl": "https://oss.anify.ai/gs/enchanted-crystal-library.spz",
+  "spawnPosition": { "x": 0, "y": 0, "z": 5 },
+  "spawnRotation": 0,
+  "floorY": 0,
+  "cameraHeight": 0.88,
+  "groundY": -0.63,
+  "walls": [
+    {
+      "start": { "x": -20, "y": 0, "z": -20 },
+      "end": { "x": 20, "y": 0, "z": -20 },
+      "height": 4
+    },
+    {
+      "start": { "x": 20, "y": 0, "z": -20 },
+      "end": { "x": 20, "y": 0, "z": 20 },
+      "height": 4
+    },
+    {
+      "start": { "x": 20, "y": 0, "z": 20 },
+      "end": { "x": -20, "y": 0, "z": 20 },
+      "height": 4
+    },
+    {
+      "start": { "x": -20, "y": 0, "z": 20 },
+      "end": { "x": -20, "y": 0, "z": -20 },
+      "height": 4
+    }
+  ],
+  "interactionPoints": [
+    {
+      "id": "library-exit",
+      "name": "图书馆出口",
+      "position": { "x": 0, "y": 0, "z": -18 },
+      "radius": 3,
+      "icon": "🚪",
+      "action": {
+        "type": "open-map",
+        "canTravel": true
+      }
+    }
+  ],
+  "ambientLight": 0.5,
+  "skybox": "twilight"
+}

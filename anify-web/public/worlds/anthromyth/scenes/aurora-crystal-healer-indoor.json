@@ -1,0 +1,48 @@
+{
+  "id": "aurora-crystal-healer-indoor",
+  "name": "极光水晶治愈师（室内）",
+  "description": "治愈圣所的室内，温暖的光芒抚慰灵魂",
+  "splatUrl": "https://oss.anify.ai/gs/aurora-crystal-healer-indoor.spz",
+  "spawnPosition": { "x": 0, "y": 0, "z": 5 },
+  "spawnRotation": 0,
+  "floorY": 0,
+  "cameraHeight": 0.88,
+  "groundY": -0.63,
+  "walls": [
+    {
+      "start": { "x": -12, "y": 0, "z": -12 },
+      "end": { "x": 12, "y": 0, "z": -12 },
+      "height": 3
+    },
+    {
+      "start": { "x": 12, "y": 0, "z": -12 },
+      "end": { "x": 12, "y": 0, "z": 12 },
+      "height": 3
+    },
+    {
+      "start": { "x": 12, "y": 0, "z": 12 },
+      "end": { "x": -12, "y": 0, "z": 12 },
+      "height": 3
+    },
+    {
+      "start": { "x": -12, "y": 0, "z": 12 },
+      "end": { "x": -12, "y": 0, "z": -12 },
+      "height": 3
+    }
+  ],
+  "interactionPoints": [
+    {
+      "id": "healer-outdoor-entrance",
+      "name": "前往室外",
+      "position": { "x": 0, "y": 0, "z": -10 },
+      "radius": 2,
+      "icon": "🌿",
+      "action": {
+        "type": "travel",
+        "target": "aurora-crystal-healer"
+      }
+    }
+  ],
+  "ambientLight": 0.8,
+  "skybox": "indoor"
+}

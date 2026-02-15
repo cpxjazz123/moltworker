@@ -1,0 +1,121 @@
+{
+    "starter-town": [
+        {
+            "id": "blacksmith",
+            "type": "shop",
+            "name": "铁匠铺",
+            "position": {
+                "x": 20,
+                "y": 30
+            },
+            "icon": "anvil",
+            "subMap": {
+                "background": "https://images.unsplash.com/photo-1599691653457-4148e658605c?q=80&w=2574&auto=format&fit=crop",
+                "intro": "炉火旺盛，铁匠正在敲打着烧红的铁块。"
+            },
+            "actions": [
+                {
+                    "type": "trade",
+                    "label": "购买装备"
+                },
+                {
+                    "type": "talk",
+                    "label": "闲聊"
+                },
+                {
+                    "type": "quest",
+                    "label": "询问任务"
+                }
+            ]
+        },
+        {
+            "id": "forest-entrance",
+            "type": "adventure",
+            "name": "迷雾森林入口",
+            "position": {
+                "x": 80,
+                "y": 20
+            },
+            "icon": "tree",
+            "subMap": {
+                "background": "https://images.unsplash.com/photo-1448375240586-dfd8d395ea6c?q=80&w=2670&auto=format&fit=crop",
+                "intro": "森林深处弥漫着诡异的雾气，似乎隐藏着危险。"
+            },
+            "actions": [
+                {
+                    "type": "adventure",
+                    "label": "进入森林",
+                    "target": "forest-dungeon"
+                }
+            ]
+        },
+        {
+            "id": "tavern",
+            "type": "rest",
+            "name": "老酒馆",
+            "position": {
+                "x": 40,
+                "y": 70
+            },
+            "icon": "beer",
+            "subMap": {
+                "background": "https://images.unsplash.com/photo-1572061486742-d62be0210086?q=80&w=2574&auto=format&fit=crop",
+                "intro": "冒险者们聚集在这里，交换着情报和故事。"
+            },
+            "actions": [
+                {
+                    "type": "rest",
+                    "label": "休息 (恢复体力)"
+                },
+                {
+                    "type": "talk",
+                    "label": "打听消息"
+                }
+            ]
+        },
+        {
+            "id": "to-capital",
+            "type": "transport",
+            "name": "前往王都的马车站",
+            "position": {
+                "x": 10,
+                "y": 80
+            },
+            "icon": "carriage",
+            "subMap": {
+                "background": "https://images.unsplash.com/photo-1559828876-4d0f62d8541a?q=80&w=2574&auto=format&fit=crop",
+                "intro": "这里的马车可以带你去往王都。"
+            },
+            "actions": [
+                {
+                    "type": "travel",
+                    "label": "出发前往王都",
+                    "target": "capital-city"
+                }
+            ]
+        }
+    ],
+    "capital-city": [
+        {
+            "id": "back-to-starter",
+            "type": "transport",
+            "name": "返回起始镇",
+            "position": {
+                "x": 90,
+                "y": 90
+            },
+            "icon": "carriage",
+            "subMap": {
+                "background": "https://images.unsplash.com/photo-1559828876-4d0f62d8541a?q=80&w=2574&auto=format&fit=crop",
+                "intro": "返回乡下的马车。"
+            },
+            "actions": [
+                {
+                    "type": "travel",
+                    "label": "返回起始镇",
+                    "target": "starter-town"
+                }
+            ]
+        }
+    ]
+}

@@ -1,0 +1,49 @@
+{
+  "starterKit": {
+    "enabled": false,
+    "items": []
+  },
+  "equipment": [
+    {
+      "id": "iron-sword",
+      "name": "铁剑",
+      "type": "weapon",
+      "rarity": "common",
+      "icon": "⚔️",
+      "level": 5,
+      "stats": [
+        { "name": "ATK", "value": 25 },
+        { "name": "CRIT", "value": 3 }
+      ],
+      "description": "标准的铁制长剑，坚固耐用。"
+    },
+    {
+      "id": "hunters-bow",
+      "name": "猎人之弓",
+      "type": "weapon",
+      "rarity": "uncommon",
+      "icon": "🏹",
+      "level": 8,
+      "stats": [
+        { "name": "ATK", "value": 20 },
+        { "name": "AGI", "value": 5 },
+        { "name": "CRIT", "value": 8 }
+      ],
+      "description": "芬恩使用的同款弓，适合远程攻击。"
+    },
+    {
+      "id": "acolyte-robe",
+      "name": "侍僧袍",
+      "type": "armor",
+      "rarity": "common",
+      "icon": "👘",
+      "level": 5,
+      "stats": [
+        { "name": "DEF", "value": 15 },
+        { "name": "RES", "value": 20 },
+        { "name": "MP", "value": 30 }
+      ],
+      "description": "星轨圣境侍僧的标准服饰。"
+    }
+  ]
+}

@@ -1,0 +1,48 @@
+{
+  "id": "atrium",
+  "name": "中庭",
+  "description": "宏伟的圣庭中庭，神纹光芒从穹顶洒落",
+  "splatUrl": "https://oss.anify.ai/gs/Atrium.spz",
+  "spawnPosition": { "x": 0, "y": 0, "z": 5 },
+  "spawnRotation": 0,
+  "floorY": 0,
+  "cameraHeight": 0.88,
+  "groundY": -0.63,
+  "walls": [
+    {
+      "start": { "x": -25, "y": 0, "z": -25 },
+      "end": { "x": 25, "y": 0, "z": -25 },
+      "height": 5
+    },
+    {
+      "start": { "x": 25, "y": 0, "z": -25 },
+      "end": { "x": 25, "y": 0, "z": 25 },
+      "height": 5
+    },
+    {
+      "start": { "x": 25, "y": 0, "z": 25 },
+      "end": { "x": -25, "y": 0, "z": 25 },
+      "height": 5
+    },
+    {
+      "start": { "x": -25, "y": 0, "z": 25 },
+      "end": { "x": -25, "y": 0, "z": -25 },
+      "height": 5
+    }
+  ],
+  "interactionPoints": [
+    {
+      "id": "atrium-exit",
+      "name": "中庭出口",
+      "position": { "x": 0, "y": 0, "z": -22 },
+      "radius": 3,
+      "icon": "🚪",
+      "action": {
+        "type": "open-map",
+        "canTravel": true
+      }
+    }
+  ],
+  "ambientLight": 0.7,
+  "skybox": "daylight"
+}

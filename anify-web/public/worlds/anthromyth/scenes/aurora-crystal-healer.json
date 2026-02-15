@@ -1,0 +1,59 @@
+{
+  "id": "aurora-crystal-healer",
+  "name": "极光水晶治愈师（室外）",
+  "description": "治愈圣所的室外区域，极光在水晶之间流动",
+  "splatUrl": "https://oss.anify.ai/gs/aurora-crystal-healer.spz",
+  "spawnPosition": { "x": 0, "y": 0, "z": 5 },
+  "spawnRotation": 0,
+  "floorY": 0,
+  "cameraHeight": 0.88,
+  "groundY": -0.63,
+  "walls": [
+    {
+      "start": { "x": -20, "y": 0, "z": -20 },
+      "end": { "x": 20, "y": 0, "z": -20 },
+      "height": 3
+    },
+    {
+      "start": { "x": 20, "y": 0, "z": -20 },
+      "end": { "x": 20, "y": 0, "z": 20 },
+      "height": 3
+    },
+    {
+      "start": { "x": 20, "y": 0, "z": 20 },
+      "end": { "x": -20, "y": 0, "z": 20 },
+      "height": 3
+    },
+    {
+      "start": { "x": -20, "y": 0, "z": 20 },
+      "end": { "x": -20, "y": 0, "z": -20 },
+      "height": 3
+    }
+  ],
+  "interactionPoints": [
+    {
+      "id": "healer-indoor-entrance",
+      "name": "进入室内",
+      "position": { "x": 5, "y": 0, "z": -5 },
+      "radius": 2,
+      "icon": "🏠",
+      "action": {
+        "type": "travel",
+        "target": "aurora-crystal-healer-indoor"
+      }
+    },
+    {
+      "id": "healer-outdoor-exit",
+      "name": "离开圣所",
+      "position": { "x": 0, "y": 0, "z": -18 },
+      "radius": 3,
+      "icon": "🚪",
+      "action": {
+        "type": "open-map",
+        "canTravel": true
+      }
+    }
+  ],
+  "ambientLight": 0.6,
+  "skybox": "aurora"
+}

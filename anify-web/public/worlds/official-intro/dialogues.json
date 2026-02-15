@@ -1,0 +1,127 @@
+{
+  "dialogues": {
+    "iris-tutorial": {
+      "id": "iris-tutorial",
+      "character": "iris",
+      "entryNode": "chat-intro-1",
+      "nodes": [
+        {
+          "id": "chat-intro-1",
+          "type": "npc",
+          "character": "iris",
+          "content": "终于联系上你了！我是虹彩守护者 Iris。",
+          "delay": 0,
+          "next": "chat-intro-2"
+        },
+        {
+          "id": "chat-intro-2",
+          "type": "npc",
+          "character": "iris",
+          "content": "暮光森林出现了异常，古老的结界正在崩溃...",
+          "delay": 1500,
+          "next": "chat-intro-3"
+        },
+        {
+          "id": "chat-intro-3",
+          "type": "npc",
+          "character": "iris",
+          "content": "我需要你的帮助！",
+          "delay": 1500,
+          "next": "player-respond"
+        },
+        {
+          "id": "player-respond",
+          "type": "choice",
+          "options": [
+            {
+              "text": "我愿意帮忙！",
+              "next": "voice-trans-1",
+              "favorability": 5
+            },
+            {
+              "text": "发生了什么？",
+              "next": "voice-trans-1",
+              "favorability": 0
+            }
+          ]
+        },
+        {
+          "id": "voice-trans-1",
+          "type": "npc",
+          "character": "iris",
+          "content": "太好了，你愿意帮忙！",
+          "delay": 0,
+          "next": "voice-trans-2"
+        },
+        {
+          "id": "voice-trans-2",
+          "type": "npc",
+          "character": "iris",
+          "content": "情况紧急，我需要用语音和你详细说明，这样更快。",
+          "delay": 1500,
+          "next": "voice-trans-3"
+        },
+        {
+          "id": "voice-trans-3",
+          "type": "npc",
+          "character": "iris",
+          "content": "请切换到语音模式。",
+          "delay": 1500
+        },
+        {
+          "id": "voice-1",
+          "type": "npc",
+          "character": "iris",
+          "content": "现在我们可以更好地沟通了。",
+          "delay": 0,
+          "isVoice": true,
+          "next": "voice-2"
+        },
+        {
+          "id": "voice-2",
+          "type": "npc",
+          "character": "iris",
+          "content": "在你出发之前，先检查一下你的装备。",
+          "delay": 2000,
+          "isVoice": true,
+          "next": "voice-3"
+        },
+        {
+          "id": "voice-3",
+          "type": "npc",
+          "character": "iris",
+          "content": "点击下方的'我'查看你的装备。",
+          "delay": 2000,
+          "isVoice": true
+        },
+        {
+          "id": "equip-done",
+          "type": "npc",
+          "character": "iris",
+          "content": "装备确认完毕！现在进入暮光森林吧。",
+          "delay": 0
+        },
+        {
+          "id": "explore-welcome",
+          "type": "system",
+          "content": "欢迎来到暮光森林",
+          "delay": 0,
+          "next": "explore-hint"
+        },
+        {
+          "id": "explore-hint",
+          "type": "system",
+          "content": "使用摇杆移动，找到 Iris 的位置标记",
+          "delay": 1500,
+          "next": "tutorial-done"
+        },
+        {
+          "id": "tutorial-done",
+          "type": "system",
+          "content": "教程完成！你的冒险正式开始...",
+          "delay": 1500
+        }
+      ]
+    }
+  }
+}

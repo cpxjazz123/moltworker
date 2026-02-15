@@ -1,0 +1,121 @@
+[
+  {
+    "id": "mem-001",
+    "title": "初次相遇",
+    "description": "在冒险者公会第一次遇见了艾琳娜，她正在查看任务公告板。",
+    "category": "conversation",
+    "timestamp": "2024-12-01",
+    "thumbnail": "👋",
+    "characterName": "艾琳娜",
+    "location": "冒险者公会",
+    "isFavorite": true,
+    "isNew": false,
+    "content": "那是一个阳光明媚的早晨，我第一次踏入冒险者公会的大门。在熙熙攘攘的人群中，我注意到了她——艾琳娜，正专注地查看着任务公告板..."
+  },
+  {
+    "id": "mem-002",
+    "title": "迷雾森林探险",
+    "description": "与队友一起深入迷雾森林，发现了古老的遗迹入口。",
+    "category": "adventure",
+    "timestamp": "2024-12-03",
+    "thumbnail": "🌲",
+    "location": "迷雾森林",
+    "isFavorite": false,
+    "isNew": false,
+    "content": "穿过层层迷雾，我们终于发现了传说中的古代遗迹入口。青苔覆盖的石门上刻满了神秘的符文..."
+  },
+  {
+    "id": "mem-003",
+    "title": "首次击杀 BOSS",
+    "description": "成功击败了森林守护者，获得了"林中猎人"称号。",
+    "category": "achievement",
+    "timestamp": "2024-12-05",
+    "thumbnail": "🏆",
+    "location": "迷雾森林深处",
+    "isFavorite": true,
+    "isNew": false
+  },
+  {
+    "id": "mem-004",
+    "title": "月下对话",
+    "description": "在营火旁与泽菲尔谈论关于魔法的奥秘。",
+    "category": "conversation",
+    "timestamp": "2024-12-06",
+    "thumbnail": "🌙",
+    "characterName": "泽菲尔",
+    "location": "野外营地",
+    "isFavorite": false,
+    "isNew": false,
+    "content": "夜幕降临，篝火的光芒在黑暗中跳跃。泽菲尔向我讲述了风元素魔法的奥秘..."
+  },
+  {
+    "id": "mem-005",
+    "title": "节日庆典",
+    "description": "参加了王都的丰收节庆典，度过了欢乐的一天。",
+    "category": "special",
+    "timestamp": "2024-12-08",
+    "thumbnail": "🎉",
+    "location": "王都广场",
+    "isFavorite": true,
+    "isNew": false,
+    "content": "王都的丰收节是一年中最盛大的庆典。彩带飘扬，歌声四起，人们欢聚一堂..."
+  },
+  {
+    "id": "mem-006",
+    "title": "暗影洞穴",
+    "description": "发现了隐藏在山脉中的神秘洞穴。",
+    "category": "adventure",
+    "timestamp": "2024-12-10",
+    "thumbnail": "🕳️",
+    "location": "北方山脉",
+    "isFavorite": false,
+    "isNew": true
+  },
+  {
+    "id": "mem-007",
+    "title": "收集达人",
+    "description": "收集了100种不同的材料，解锁了"收集达人"成就。",
+    "category": "achievement",
+    "timestamp": "2024-12-11",
+    "thumbnail": "📦",
+    "isFavorite": false,
+    "isNew": true
+  },
+  {
+    "id": "mem-008",
+    "title": "艾琳娜的秘密",
+    "description": "艾琳娜向你透露了她成为冒险者的真正原因。",
+    "category": "conversation",
+    "timestamp": "2024-12-12",
+    "thumbnail": "💭",
+    "characterName": "艾琳娜",
+    "location": "酒馆",
+    "isFavorite": true,
+    "isNew": true,
+    "content": "艾琳娜沉默了片刻，然后缓缓开口讲述了她的过去。原来她并非只是普通的冒险者..."
+  },
+  {
+    "id": "mem-009",
+    "title": "古代遗迹探索",
+    "description": "深入探索古代遗迹，解开了部分远古文明的谜团。",
+    "category": "adventure",
+    "timestamp": "2024-12-13",
+    "thumbnail": "🏛️",
+    "location": "古代遗迹",
+    "isFavorite": false,
+    "isNew": true
+  },
+  {
+    "id": "mem-010",
+    "title": "命运的邂逅",
+    "description": "在危急时刻，神秘的旅行者出手相助，这场相遇似乎并非偶然...",
+    "category": "special",
+    "timestamp": "2024-12-14",
+    "thumbnail": "✨",
+    "characterName": "神秘旅行者",
+    "location": "古代遗迹",
+    "isFavorite": false,
+    "isNew": true,
+    "content": "就在我以为一切都完了的时候，一道银色的光芒划破黑暗。那个戴着兜帽的身影，究竟是何方神圣..."
+  }
+]

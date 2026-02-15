@@ -1,0 +1,20 @@
+{
+  "areas": [
+    {
+      "id": "twilight-forest",
+      "name": "暮光森林",
+      "description": "古老的森林，微光透过树叶洒落。结界正在崩溃，神秘的力量在此涌动。",
+      "type": "town",
+      "mapX": 50,
+      "mapY": 50,
+      "icon": "🌲",
+      "dangerLevel": 1,
+      "levelRange": "1-5",
+      "scene": "twilight-forest",
+      "characters": ["iris"],
+      "connectedAreas": [],
+      "unlocked": true,
+      "requirements": []
+    }
+  ]
+}

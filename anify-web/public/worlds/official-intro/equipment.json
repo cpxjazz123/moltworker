@@ -1,0 +1,92 @@
+{
+  "starterKit": {
+    "enabled": true,
+    "items": ["starter-sword", "starter-armor", "starter-helm", "starter-boots", "starter-gloves", "starter-ring"]
+  },
+  "equipment": [
+    {
+      "id": "starter-sword",
+      "name": "新手长剑",
+      "type": "weapon",
+      "rarity": "common",
+      "icon": "⚔️",
+      "level": 1,
+      "stats": [
+        { "name": "ATK", "value": 15 },
+        { "name": "CRIT", "value": 2 }
+      ],
+      "description": "一把朴素但可靠的长剑，适合初出茅庐的冒险者。",
+      "equipped": true
+    },
+    {
+      "id": "starter-armor",
+      "name": "学徒铠甲",
+      "type": "armor",
+      "rarity": "common",
+      "icon": "🛡️",
+      "level": 1,
+      "stats": [
+        { "name": "DEF", "value": 20 },
+        { "name": "HP", "value": 50 }
+      ],
+      "description": "轻便的皮甲，提供基础防护。",
+      "equipped": true
+    },
+    {
+      "id": "starter-helm",
+      "name": "布帽",
+      "type": "helm",
+      "rarity": "common",
+      "icon": "🧢",
+      "level": 1,
+      "stats": [
+        { "name": "DEF", "value": 5 },
+        { "name": "RES", "value": 3 }
+      ],
+      "description": "简单的布帽，聊胜于无。",
+      "equipped": true
+    },
+    {
+      "id": "starter-boots",
+      "name": "旅行靴",
+      "type": "boots",
+      "rarity": "common",
+      "icon": "👢",
+      "level": 1,
+      "stats": [
+        { "name": "SPD", "value": 8 },
+        { "name": "EVA", "value": 2 }
+      ],
+      "description": "舒适的旅行靴，适合长途跋涉。",
+      "equipped": true
+    },
+    {
+      "id": "starter-gloves",
+      "name": "皮手套",
+      "type": "gloves",
+      "rarity": "common",
+      "icon": "🧤",
+      "level": 1,
+      "stats": [
+        { "name": "ATK", "value": 3 },
+        { "name": "DEF", "value": 2 }
+      ],
+      "description": "基础的皮手套，保护双手。",
+      "equipped": true
+    },
+    {
+      "id": "starter-ring",
+      "name": "护身符",
+      "type": "accessory",
+      "rarity": "common",
+      "icon": "📿",
+      "level": 1,
+      "stats": [
+        { "name": "HP", "value": 20 },
+        { "name": "MP", "value": 10 }
+      ],
+      "description": "传统的护身符，据说能带来好运。",
+      "equipped": true
+    }
+  ]
+}

@@ -1,0 +1,87 @@
+[
+  {
+    "id": "1",
+    "name": "Iron Sword",
+    "icon": "⚔️",
+    "type": "weapon",
+    "rarity": "common",
+    "materials": [
+      { "id": "m1", "name": "Iron Ore", "icon": "🪨", "owned": 15, "required": 5 },
+      { "id": "m2", "name": "Leather Strip", "icon": "🥾", "owned": 8, "required": 2 }
+    ],
+    "craftTime": 30,
+    "description": "A basic iron sword suitable for beginners.",
+    "stats": [
+      { "name": "Attack", "value": "+80" },
+      { "name": "Durability", "value": "100" }
+    ]
+  },
+  {
+    "id": "2",
+    "name": "Steel Plate Armor",
+    "icon": "🛡️",
+    "type": "armor",
+    "rarity": "rare",
+    "materials": [
+      { "id": "m3", "name": "Steel Ingot", "icon": "🔩", "owned": 6, "required": 8 },
+      { "id": "m4", "name": "Dragon Scale", "icon": "🐉", "owned": 2, "required": 3 },
+      { "id": "m5", "name": "Magic Thread", "icon": "🧵", "owned": 5, "required": 5 }
+    ],
+    "craftTime": 120,
+    "description": "Heavy armor reinforced with dragon scales.",
+    "stats": [
+      { "name": "Defense", "value": "+180" },
+      { "name": "HP", "value": "+200" }
+    ]
+  },
+  {
+    "id": "3",
+    "name": "Flame Ring",
+    "icon": "💍",
+    "type": "accessory",
+    "rarity": "epic",
+    "materials": [
+      { "id": "m6", "name": "Fire Crystal", "icon": "🔥", "owned": 3, "required": 2 },
+      { "id": "m7", "name": "Gold Ring", "icon": "💛", "owned": 1, "required": 1 },
+      { "id": "m8", "name": "Magic Essence", "icon": "✨", "owned": 10, "required": 5 }
+    ],
+    "craftTime": 180,
+    "description": "A ring imbued with the power of fire.",
+    "stats": [
+      { "name": "Fire Dmg", "value": "+25%" },
+      { "name": "Fire Res", "value": "+20%" }
+    ]
+  },
+  {
+    "id": "4",
+    "name": "Health Potion",
+    "icon": "🧪",
+    "type": "consumable",
+    "rarity": "common",
+    "materials": [
+      { "id": "m9", "name": "Herb", "icon": "🌿", "owned": 20, "required": 3 },
+      { "id": "m10", "name": "Pure Water", "icon": "💧", "owned": 15, "required": 2 }
+    ],
+    "craftTime": 10,
+    "description": "Recovers 500 HP instantly."
+  },
+  {
+    "id": "5",
+    "name": "Legendary Blade",
+    "icon": "🗡️",
+    "type": "weapon",
+    "rarity": "legendary",
+    "materials": [
+      { "id": "m11", "name": "Mithril Ore", "icon": "💎", "owned": 1, "required": 5 },
+      { "id": "m12", "name": "Phoenix Feather", "icon": "🪶", "owned": 0, "required": 2 },
+      { "id": "m13", "name": "Ancient Rune", "icon": "📜", "owned": 1, "required": 3 }
+    ],
+    "craftTime": 600,
+    "description": "A legendary weapon forged from mythical materials.",
+    "stats": [
+      { "name": "Attack", "value": "+500" },
+      { "name": "All Stats", "value": "+50" },
+      { "name": "Special", "value": "Holy Slash" }
+    ]
+  }
+]

@@ -1,0 +1,158 @@
+{
+  "characters": [
+    {
+      "id": "fenne",
+      "name": "芬恩",
+      "title": "猎女",
+      "description": "石洼落的守护者，身手敏捷的女猎人。对初来乍到的冒险者十分友善。",
+      "portrait": "/worlds/anthromyth/portraits/fenne.png",
+      "role": "guide",
+      "personality": "爽朗直率，乐于助人",
+      "backstory": "从小在石洼落长大，精通狩猎和森林生存技巧。自愿担任村落的守护者。",
+      "location": "swallow-hole",
+      "baseFavorability": 60,
+      "greeting": "嘿，新来的冒险者！欢迎来到石洼落。",
+      "attributes": {
+        "perception": 18,
+        "agility": 20,
+        "strength": 14,
+        "intelligence": 12,
+        "charisma": 15
+      },
+      "dialogueTree": "fenne-main",
+      "quests": ["welcome-to-swallow-hole"]
+    },
+    {
+      "id": "cas_oravita",
+      "name": "凯斯·奥拉维塔",
+      "title": "谕真·大长老",
+      "description": "圣枢院大长老，守序宗领袖。诠释母板圣谕，调度圣境所有圣谕执行，执掌最高神权与圣卫指挥权。",
+      "portrait": "/worlds/anthromyth/portraits/cas_oravita.png",
+      "role": "quest-giver",
+      "personality": "威严庄重，行事一丝不苟",
+      "backstory": "圣境当前的统治核心，负责诠释创世母板的圣谕。",
+      "location": "astraman",
+      "baseFavorability": 40,
+      "greeting": "星轨圣境欢迎你，冒险者。希望你能遵守圣谕。",
+      "attributes": {
+        "perception": 18,
+        "agility": 12,
+        "strength": 14,
+        "intelligence": 22,
+        "charisma": 16
+      },
+      "dialogueTree": "cas-main",
+      "quests": []
+    },
+    {
+      "id": "jeffrey_oravita",
+      "name": "杰弗里·奥拉维塔",
+      "title": "谕真·圣谕秘档记录官",
+      "description": "常穿半旧的浅金圣谕袍，袖口绣着未完成的神纹，发间束着一枚铜制星篆符。性格青涩却异常严谨。",
+      "portrait": "/worlds/anthromyth/portraits/jeffrey_oravita.png",
+      "role": "npc",
+      "personality": "青涩严谨，拥有圣谕速记天赋",
+      "backstory": "能以神纹篆体同步记录圣谕推演的每一个细节，误差率不足千分之一。被守序宗视为未来之星。",
+      "location": "astraman",
+      "baseFavorability": 55,
+      "greeting": "你好，我正在记录圣谕推演...有什么事吗？",
+      "attributes": {
+        "perception": 20,
+        "agility": 16,
+        "strength": 10,
+        "intelligence": 18,
+        "charisma": 14
+      },
+      "dialogueTree": "jeffrey-main",
+      "quests": []
+    },
+    {
+      "id": "lyra_oravia",
+      "name": "莱拉·奥拉维亚",
+      "title": "谕启·应机宗领袖",
+      "description": "银白发丝束着嵌星纹的玉冠，常穿改良版圣谕长袍。性格冷静果决，擅长在圣谕推演中捕捉变量生机。",
+      "portrait": "/worlds/anthromyth/portraits/lyra_oravia.png",
+      "role": "quest-giver",
+      "personality": "冷静果决，善于应变",
+      "backstory": "应机宗年轻女领袖，曾凭一次即兴调整的圣卫调度方案化解星轨裂隙危机。",
+      "location": "astraman",
+      "baseFavorability": 50,
+      "greeting": "应机而变，灵韵择优。你是来寻求变数的吗？",
+      "attributes": {
+        "perception": 16,
+        "agility": 18,
+        "strength": 12,
+        "intelligence": 20,
+        "charisma": 17
+      },
+      "dialogueTree": "lyra-main",
+      "quests": []
+    },
+    {
+      "id": "thea_celenom",
+      "name": "西娅·塞勒诺姆",
+      "title": "星律·推演诗人",
+      "description": "常穿淡紫色灵纹锦缎，发间别着一枚星轨造型的银簪。性格敏感细腻，能在星象推演中看见灵韵的诗歌。",
+      "portrait": "/worlds/anthromyth/portraits/thea_celenom.png",
+      "role": "npc",
+      "personality": "敏感细腻，充满诗意",
+      "backstory": "将枯燥数据转化为动态星图光雕，曾通过星象异常提前预判了三次小型星轨紊乱。",
+      "location": "sanculus",
+      "baseFavorability": 65,
+      "greeting": "星辰在低语...你能听见吗？",
+      "attributes": {
+        "perception": 22,
+        "agility": 14,
+        "strength": 10,
+        "intelligence": 24,
+        "charisma": 18
+      },
+      "dialogueTree": "thea-main",
+      "quests": []
+    },
+    {
+      "id": "elsie_phosphie",
+      "name": "埃尔西·弗斯菲",
+      "title": "炽辉·流光殿殿主",
+      "description": "流光殿的领导者，掌管众光同辉的圣能。",
+      "portrait": "/worlds/anthromyth/portraits/elsie_phosphie.png",
+      "role": "quest-giver",
+      "personality": "威严而亲切",
+      "backstory": "流光殿现任殿主，负责协调万灵共推的并行推演系统。",
+      "location": "fluxus",
+      "baseFavorability": 50,
+      "greeting": "众光同辉，万灵共推。欢迎来到流光殿。",
+      "attributes": {
+        "perception": 18,
+        "agility": 15,
+        "strength": 12,
+        "intelligence": 20,
+        "charisma": 19
+      },
+      "dialogueTree": "elsie-main",
+      "quests": []
+    },
+    {
+      "id": "eleanor_phosphie",
+      "name": "埃利诺·弗斯菲",
+      "title": "炽辉·光枢集群首领",
+      "description": "服饰是流光殿标志性的流线型光纹装，领口和袖口镶嵌着会同步发光的星晶。身手矫健，性格热烈爽朗。",
+      "portrait": "/worlds/anthromyth/portraits/eleanor_phosphie.png",
+      "role": "companion",
+      "personality": "热烈爽朗，极具感染力",
+      "backstory": "擅长协调集群进行大规模并行推演，是年轻流光行者心中的炽光姐姐。",
+      "location": "fluxus",
+      "baseFavorability": 70,
+      "greeting": "嘿！新面孔！来加入我们的光枢集群吧！",
+      "attributes": {
+        "perception": 16,
+        "agility": 19,
+        "strength": 15,
+        "intelligence": 17,
+        "charisma": 20
+      },
+      "dialogueTree": "eleanor-main",
+      "quests": []
+    }
+  ]
+}

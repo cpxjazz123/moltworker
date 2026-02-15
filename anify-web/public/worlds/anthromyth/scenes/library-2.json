@@ -1,0 +1,48 @@
+{
+  "id": "library-2",
+  "name": "图书馆（二层）",
+  "description": "幽静的图书馆二层，珍藏着更稀有的文献",
+  "splatUrl": "https://oss.anify.ai/gs/Library-2.spz",
+  "spawnPosition": { "x": 0, "y": 0, "z": 5 },
+  "spawnRotation": 0,
+  "floorY": 0,
+  "cameraHeight": 0.88,
+  "groundY": -0.63,
+  "walls": [
+    {
+      "start": { "x": -18, "y": 0, "z": -18 },
+      "end": { "x": 18, "y": 0, "z": -18 },
+      "height": 4
+    },
+    {
+      "start": { "x": 18, "y": 0, "z": -18 },
+      "end": { "x": 18, "y": 0, "z": 18 },
+      "height": 4
+    },
+    {
+      "start": { "x": 18, "y": 0, "z": 18 },
+      "end": { "x": -18, "y": 0, "z": 18 },
+      "height": 4
+    },
+    {
+      "start": { "x": -18, "y": 0, "z": 18 },
+      "end": { "x": -18, "y": 0, "z": -18 },
+      "height": 4
+    }
+  ],
+  "interactionPoints": [
+    {
+      "id": "library-2-exit",
+      "name": "图书馆出口",
+      "position": { "x": 0, "y": 0, "z": -15 },
+      "radius": 3,
+      "icon": "🚪",
+      "action": {
+        "type": "open-map",
+        "canTravel": true
+      }
+    }
+  ],
+  "ambientLight": 0.5,
+  "skybox": "twilight"
+}

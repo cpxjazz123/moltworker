@@ -1,0 +1,25 @@
+{
+  "characters": [
+    {
+      "id": "iris",
+      "name": "Iris",
+      "title": "虹彩守护者",
+      "description": "守护暮光森林的精灵，正在寻求帮助来修复崩溃的结界。她温柔而坚定，对初来乍到的冒险者充满期待。",
+      "portrait": "/worlds/official-intro/portraits/iris.png",
+      "role": "guide",
+      "personality": "温柔而坚定，对冒险者充满信任",
+      "backstory": "作为暮光森林的守护者，Iris 已经独自守护这片土地数百年。当结界出现裂痕时，她感应到了新的冒险者的到来...",
+      "location": "twilight-forest",
+      "baseFavorability": 50,
+      "greeting": "终于联系上你了！我是虹彩守护者 Iris。",
+      "attributes": {
+        "perception": 18,
+        "agility": 16,
+        "strength": 12,
+        "intelligence": 20,
+        "charisma": 18
+      },
+      "dialogueTree": "iris-tutorial"
+    }
+  ]
+}

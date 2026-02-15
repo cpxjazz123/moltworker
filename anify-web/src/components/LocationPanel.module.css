@@ -1,0 +1,49 @@
+.infoBox {
+  border: 1px solid var(--color-border);
+  padding: 15px;
+  border-radius: 8px;
+  background: rgba(15, 12, 21, 0.6);
+  backdrop-filter: blur(5px);
+  color: var(--color-text-muted);
+  font-size: 0.9rem;
+}
+
+.locationBox {
+  composes: infoBox;
+  position: sticky;
+  top: 0;
+  z-index: 50;
+  margin-bottom: 20px;
+}
+
+.infoBox h3 {
+  margin-top: 0;
+  font-size: 1rem;
+  color: var(--color-primary);
+  border-bottom: 1px solid var(--color-border);
+  padding-bottom: 5px;
+  margin-bottom: 10px;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+}
+
+.locationList {
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+  margin-top: 5px;
+}
+
+.locationList span {
+  background: rgba(255, 255, 255, 0.05);
+  padding: 2px 8px;
+  border-radius: 4px;
+  border: 1px solid var(--color-border);
+}
+
+.mapLink {
+  display: inline-block;
+  margin-top: 10px;
+  color: var(--color-accent);
+  text-decoration: underline;
+}

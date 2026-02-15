@@ -1,0 +1,35 @@
+{
+  "name": "我的住所",
+  "type": "温馨小屋",
+  "journal": [
+    {
+      "id": "1",
+      "title": "抵达新手村",
+      "date": "第1天",
+      "content": "今天终于到达了这个陌生的世界，一切都是那么新奇..."
+    },
+    {
+      "id": "2",
+      "title": "第一次战斗",
+      "date": "第2天",
+      "content": "在森林里遇到了史莱姆，虽然很弱但还是有些紧张..."
+    },
+    {
+      "id": "3",
+      "title": "结识新伙伴",
+      "date": "第5天",
+      "content": "在酒馆认识了一位魔法师，她答应教我一些基础魔法..."
+    }
+  ],
+  "storage": {
+    "items": [
+      { "id": "1", "name": "铁矿石", "quantity": 25, "category": "material", "rarity": "common" },
+      { "id": "2", "name": "草药", "quantity": 15, "category": "consumable", "rarity": "common" },
+      { "id": "3", "name": "旧长剑", "quantity": 1, "category": "weapon", "rarity": "common" },
+      { "id": "4", "name": "魔晶石", "quantity": 5, "category": "material", "rarity": "uncommon" },
+      { "id": "5", "name": "破旧的地图", "quantity": 1, "category": "misc", "rarity": "uncommon" },
+      { "id": "6", "name": "皮革护甲", "quantity": 1, "category": "armor", "rarity": "common" }
+    ],
+    "maxCapacity": 100
+  }
+}

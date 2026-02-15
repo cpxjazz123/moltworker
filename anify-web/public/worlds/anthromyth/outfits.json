@@ -1,0 +1,56 @@
+[
+  {
+    "id": "daily-dress",
+    "name": "日常便装",
+    "description": "舒适的日常穿搭",
+    "thumbnail": "/Character_sample.png",
+    "rarity": "common",
+    "isOwned": true,
+    "isEquipped": true
+  },
+  {
+    "id": "battle-armor",
+    "name": "战斗铠甲",
+    "description": "为战斗而生的护甲",
+    "thumbnail": "/Character_sample.png",
+    "rarity": "rare",
+    "isOwned": true,
+    "isEquipped": false
+  },
+  {
+    "id": "summer-breeze",
+    "name": "夏日微风",
+    "description": "清凉的夏季服装",
+    "thumbnail": "/Character_sample.png",
+    "rarity": "common",
+    "isOwned": true,
+    "isEquipped": false
+  },
+  {
+    "id": "night-gala",
+    "name": "星夜晚宴",
+    "description": "华丽的晚礼服",
+    "thumbnail": "/Character_sample.png",
+    "rarity": "epic",
+    "isOwned": true,
+    "isEquipped": false
+  },
+  {
+    "id": "ancient-robe",
+    "name": "上古法袍",
+    "description": "蕴含古老魔力的法袍",
+    "thumbnail": "/Character_sample.png",
+    "rarity": "legendary",
+    "isOwned": false,
+    "isEquipped": false
+  },
+  {
+    "id": "school-uniform",
+    "name": "学院制服",
+    "description": "魔法学院的标准制服",
+    "thumbnail": "/Character_sample.png",
+    "rarity": "rare",
+    "isOwned": true,
+    "isEquipped": false
+  }
+]

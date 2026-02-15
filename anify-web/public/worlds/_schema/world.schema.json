@@ -1,0 +1,47 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "world.schema.json",
+  "title": "World",
+  "description": "World metadata schema",
+  "type": "object",
+  "required": ["id", "name", "description", "version", "type", "defaultArea", "settings", "features", "requirements"],
+  "properties": {
+    "id": { "type": "string" },
+    "name": { "type": "string" },
+    "description": { "type": "string" },
+    "version": { "type": "string", "pattern": "^\\d+\\.\\d+\\.\\d+$" },
+    "type": { "enum": ["tutorial", "campaign", "sandbox"] },
+    "coverImage": { "type": "string" },
+    "defaultArea": { "type": "string" },
+    "defaultCharacter": { "type": "string" },
+    "settings": {
+      "type": "object",
+      "required": ["difficulty", "permadeath", "timeScale"],
+      "properties": {
+        "difficulty": { "enum": ["easy", "normal", "hard"] },
+        "permadeath": { "type": "boolean" },
+        "timeScale": { "type": "number", "minimum": 0 }
+      }
+    },
+    "features": {
+      "type": "object",
+      "required": ["combat", "exploration", "dialogue", "tutorial"],
+      "properties": {
+        "combat": { "type": "boolean" },
+        "exploration": { "type": "boolean" },
+        "dialogue": { "type": "boolean" },
+        "tutorial": { "type": "boolean" },
+        "crafting": { "type": "boolean" },
+        "trading": { "type": "boolean" }
+      }
+    },
+    "requirements": {
+      "type": "object",
+      "required": ["minLevel", "completedWorlds"],
+      "properties": {
+        "minLevel": { "type": "integer", "minimum": 0 },
+        "completedWorlds": { "type": "array", "items": { "type": "string" } }
+      }
+    }
+  }
+}

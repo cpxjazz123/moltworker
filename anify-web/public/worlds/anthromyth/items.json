@@ -1,0 +1,50 @@
+{
+  "items": [
+    {
+      "id": "healing-potion",
+      "name": "治疗药水",
+      "type": "consumable",
+      "rarity": "common",
+      "icon": "🧪",
+      "description": "恢复 100 HP。",
+      "stackable": true,
+      "maxStack": 99,
+      "price": 50,
+      "effects": { "hp": 100 }
+    },
+    {
+      "id": "mana-potion",
+      "name": "魔力药水",
+      "type": "consumable",
+      "rarity": "common",
+      "icon": "💧",
+      "description": "恢复 50 MP。",
+      "stackable": true,
+      "maxStack": 99,
+      "price": 80,
+      "effects": { "mp": 50 }
+    },
+    {
+      "id": "fire-core-shard",
+      "name": "炎核碎片",
+      "type": "material",
+      "rarity": "rare",
+      "icon": "🔥",
+      "description": "炎核巨人体内的能量碎片，可用于锻造火属性装备。",
+      "stackable": true,
+      "maxStack": 99,
+      "price": 500
+    },
+    {
+      "id": "wisp-dust",
+      "name": "精灵尘",
+      "type": "material",
+      "rarity": "common",
+      "icon": "✨",
+      "description": "林间精灵散落的光尘，是制作灵能药剂的材料。",
+      "stackable": true,
+      "maxStack": 99,
+      "price": 20
+    }
+  ]
+}

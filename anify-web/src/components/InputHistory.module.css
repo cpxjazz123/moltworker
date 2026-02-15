@@ -1,0 +1,70 @@
+.panel {
+  position: relative;
+  background: rgba(15, 12, 21, 0.4);
+  border: 1px solid var(--color-primary);
+  border-radius: 8px;
+  backdrop-filter: blur(5px);
+  padding: 1rem;
+  display: flex;
+  flex-direction: column;
+  z-index: 10;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+  transition: all 0.3s ease;
+}
+
+.panel:hover {
+  background: rgba(15, 12, 21, 0.6);
+  border-color: var(--color-primary);
+  box-shadow: 0 0 15px rgba(255, 215, 0, 0.1);
+}
+
+.title {
+  font-size: 1.2rem;
+  color: var(--color-primary);
+  margin-bottom: 1rem;
+  text-align: center;
+  border-bottom: 1px solid var(--color-border);
+  padding-bottom: 0.5rem;
+  font-family: var(--font-heading);
+  font-weight: 700;
+}
+
+.list {
+  flex: 1;
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  padding-right: 0.5rem;
+}
+
+.list::-webkit-scrollbar {
+  width: 6px;
+}
+
+.list::-webkit-scrollbar-thumb {
+  background: rgba(255, 215, 0, 0.2);
+}
+
+.item {
+  padding: 0.5rem;
+  background: rgba(255, 255, 255, 0.05);
+  border-radius: 4px;
+  font-size: 0.9rem;
+  color: var(--color-text-muted);
+  border-left: 2px solid transparent;
+  transition: all 0.2s ease;
+}
+
+.item:hover {
+  background: rgba(255, 255, 255, 0.1);
+  color: var(--color-text-main);
+  border-left-color: var(--color-primary);
+}
+
+.empty {
+  color: var(--color-text-muted);
+  font-style: italic;
+  text-align: center;
+  padding: 1rem;
+}

@@ -1,0 +1,97 @@
+[
+    {
+        "id": "1",
+        "title": "Clear Forest Goblins",
+        "description": "A group of goblins has appeared in the forest. Eliminate them.",
+        "type": "daily",
+        "difficulty": "easy",
+        "reward": {
+            "gold": 100,
+            "exp": 50
+        },
+        "status": "available",
+        "location": "Emerald Forest",
+        "npc": "Village Chief"
+    },
+    {
+        "id": "2",
+        "title": "Escort Caravan",
+        "description": "Protect the caravan until it reaches the next town.",
+        "type": "side",
+        "difficulty": "medium",
+        "reward": {
+            "gold": 250,
+            "exp": 120
+        },
+        "status": "in_progress",
+        "location": "Trade Route",
+        "npc": "Caravan Leader",
+        "objectives": [
+            {
+                "id": "1",
+                "description": "Meet up with caravan",
+                "current": 1,
+                "target": 1,
+                "completed": true
+            },
+            {
+                "id": "2",
+                "description": "Defend against bandits",
+                "current": 2,
+                "target": 5,
+                "completed": false
+            },
+            {
+                "id": "3",
+                "description": "Arrive at destination",
+                "current": 0,
+                "target": 1,
+                "completed": false
+            }
+        ]
+    },
+    {
+        "id": "3",
+        "title": "Ogre Hunt",
+        "description": "A powerful ogre lives deep in the cave.",
+        "type": "side",
+        "difficulty": "hard",
+        "reward": {
+            "gold": 500,
+            "exp": 300,
+            "item": "Ogre's Fang"
+        },
+        "status": "available",
+        "location": "Dark Cave",
+        "npc": "Hunter's Guild"
+    },
+    {
+        "id": "4",
+        "title": "Dragon's Lair Expedition",
+        "description": "Legend has it that ancient treasures lie within the Dragon's Lair.",
+        "type": "main",
+        "difficulty": "legendary",
+        "reward": {
+            "gold": 1000,
+            "exp": 800,
+            "item": "Dragon Crystal"
+        },
+        "status": "available",
+        "location": "Dragonbone Mountain",
+        "npc": "Mysterious Elder"
+    },
+    {
+        "id": "5",
+        "title": "Gather Herbs",
+        "description": "Gather 10 Healing Herbs for the apothecary.",
+        "type": "daily",
+        "difficulty": "easy",
+        "reward": {
+            "gold": 50,
+            "exp": 30
+        },
+        "status": "completed",
+        "location": "Grasslands",
+        "npc": "Apothecary"
+    }
+]

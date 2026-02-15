@@ -1,0 +1,58 @@
+{
+  "factions": [
+    {
+      "id": "order-sect",
+      "name": "守序宗",
+      "description": "圣枢院主流派系，信奉「圣谕唯尊、顺位执行」。",
+      "leader": "cas_oravita",
+      "headquarters": "astraman",
+      "allies": [],
+      "enemies": []
+    },
+    {
+      "id": "adapt-sect",
+      "name": "应机宗",
+      "description": "圣枢院变革派系，信奉「应境而变、灵韵择优」。",
+      "leader": "lyra_oravia",
+      "headquarters": "astraman",
+      "allies": [],
+      "enemies": []
+    },
+    {
+      "id": "divine-sect",
+      "name": "神则派",
+      "description": "灵算阁派系，侧重神则推演。",
+      "leader": null,
+      "headquarters": "sanculus",
+      "allies": [],
+      "enemies": []
+    },
+    {
+      "id": "astral-sect",
+      "name": "星象派",
+      "description": "灵算阁派系，侧重星象分析。",
+      "leader": null,
+      "headquarters": "sanculus",
+      "allies": [],
+      "enemies": []
+    },
+    {
+      "id": "flux-hall",
+      "name": "流光殿",
+      "description": "具备「众光同辉」圣能，以「万灵共推、瞬发千算」为运行原则。",
+      "leader": "elsie_phosphie",
+      "headquarters": "fluxus",
+      "allies": [],
+      "enemies": []
+    },
+    {
+      "id": "truth-hall",
+      "name": "蕴真殿",
+      "description": "负责封存圣境所有圣谕、推演数据及创世以来的圣史。",
+      "leader": "gilda_larvault",
+      "headquarters": "varcus",
+      "allies": [],
+      "enemies": []
+    }
+  ]
+}

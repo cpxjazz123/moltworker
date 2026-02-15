@@ -1,0 +1,90 @@
+{
+  "enabled": true,
+  "stepOrder": [
+    "landing",
+    "character_create",
+    "chat_intro",
+    "chat_respond",
+    "voice_transition",
+    "voice_call",
+    "equipment_check",
+    "explore_intro",
+    "tutorial_complete"
+  ],
+  "steps": [
+    {
+      "id": "landing",
+      "route": "/landing",
+      "nextStep": "character_create",
+      "requiresAction": false,
+      "messages": []
+    },
+    {
+      "id": "character_create",
+      "route": "/landing",
+      "nextStep": "chat_intro",
+      "requiresAction": true,
+      "action": "create_character",
+      "messages": []
+    },
+    {
+      "id": "chat_intro",
+      "route": "/",
+      "nextStep": "chat_respond",
+      "requiresAction": false,
+      "messages": ["chat-intro-1", "chat-intro-2", "chat-intro-3"],
+      "character": "iris"
+    },
+    {
+      "id": "chat_respond",
+      "route": "/",
+      "nextStep": "voice_transition",
+      "requiresAction": true,
+      "action": "player_respond",
+      "messages": ["player-respond"]
+    },
+    {
+      "id": "voice_transition",
+      "route": "/",
+      "nextStep": "voice_call",
+      "requiresAction": true,
+      "action": "switch_to_voice",
+      "messages": ["voice-trans-1", "voice-trans-2", "voice-trans-3"],
+      "character": "iris"
+    },
+    {
+      "id": "voice_call",
+      "route": "/",
+      "nextStep": "equipment_check",
+      "requiresAction": false,
+      "messages": ["voice-1", "voice-2", "voice-3"],
+      "character": "iris"
+    },
+    {
+      "id": "equipment_check",
+      "route": "/",
+      "nextStep": "explore_intro",
+      "requiresAction": true,
+      "action": "view_equipment",
+      "highlightElement": "dock-me",
+      "tooltip": "点击这里查看装备"
+    },
+    {
+      "id": "explore_intro",
+      "route": "/me",
+      "nextStep": "tutorial_complete",
+      "requiresAction": true,
+      "action": "enter_explore",
+      "messages": ["equip-done"],
+      "highlightElement": "dock-explore",
+      "tooltip": "点击进入游戏"
+    },
+    {
+      "id": "tutorial_complete",
+      "route": "/explore",
+      "nextStep": null,
+      "requiresAction": false,
+      "messages": ["explore-welcome", "explore-hint", "tutorial-done"]
+    }
+  ]
+}

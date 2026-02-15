@@ -1,0 +1,357 @@
+/* Fill the remaining space under the nav */
+.login-page {
+  height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-image: url("/images/login-bg.jpg");
+  background-size: cover;
+  background-position: center;
+}
+
+.login-bg-overlay {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 16px;
+}
+
+/* Floating glass card */
+.login-card {
+  width: 360px;
+  padding: 32px 32px 28px;
+  border-radius: 24px;
+  background: rgba(0, 0, 0, 0.45); /* semi-transparent */
+  box-shadow: 0 18px 40px rgba(0, 0, 0, 0.55); /* floating shadow */
+  backdrop-filter: blur(18px); /* glass effect */
+  -webkit-backdrop-filter: blur(18px);
+  color: #ffffff;
+}
+
+/* Title */
+.login-title {
+  margin: 0 0 24px;
+  font-size: 28px;
+  font-weight: 700;
+  text-align: center;
+}
+
+/* Form layout */
+.login-form {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+/* Each field block */
+.login-field {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+/* Label text */
+.login-label {
+  font-size: 14px;
+}
+
+/* Input style */
+.login-input {
+  height: 40px;
+  padding: 0 12px;
+  border-radius: 10px;
+  border: 1px solid rgba(255, 255, 255, 0.35);
+  background: rgba(0, 0, 0, 0.35);
+  color: #ffffff;
+  outline: none;
+  font-size: 14px;
+}
+
+.login-input::placeholder {
+  color: rgba(255, 255, 255, 0.6);
+}
+
+.login-input:focus {
+  border-color: rgba(255, 255, 255, 0.6);
+  box-shadow: 0 0 0 1px rgba(255, 255, 255, 0.3);
+}
+
+/* Success message */
+.login-success {
+  margin: 0;
+  font-size: 13px;
+  color: #9be58c;
+}
+
+/* Error message */
+.login-error {
+  margin: 0;
+  font-size: 13px;
+  color: #ff9b9b;
+}
+
+/* Forgot password row */
+.login-forgot {
+  margin: 0;
+  margin-top: -4px;
+  text-align: right;
+}
+
+/* Forgot password button */
+.forgot-password-btn {
+  background: none;
+  border: none;
+  padding: 0;
+  font-size: 13px;
+  color: rgba(255, 255, 255, 0.7);
+  cursor: pointer;
+}
+
+.forgot-password-btn:hover {
+  text-decoration: underline;
+}
+
+/* Submit button */
+.login-button {
+  margin-top: 4px;
+  width: 100%;
+  height: 44px;
+  border-radius: 10px;
+  border: 1px solid rgba(255, 255, 255, 0.3);
+
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  font-size: 15px;
+  font-weight: 600;
+  cursor: pointer;
+  background: rgba(255, 255, 255, 0.2);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  color: #ffffff;
+}
+
+.login-button:disabled {
+  opacity: 0.7;
+  cursor: not-allowed;
+}
+
+.login-button:hover:not(:disabled) {
+  filter: brightness(1.05);
+}
+
+/* Footer-like rows (Google + Create) */
+.login-footer {
+  margin-top: 20px;
+  font-size: 14px;
+  text-align: center;
+  color: rgba(255, 255, 255, 0.7);
+}
+
+/* Link style */
+.login-link {
+  color: rgba(255, 255, 255, 0.8);
+  text-decoration: none;
+}
+
+.login-link:hover {
+  text-decoration: underline;
+}
+
+.google-button {
+  width: 100%;
+  height: 44px;
+
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  border-radius: 10px;
+  border: 1.5px solid rgba(255, 255, 255, 0.3);
+  background: rgba(255, 255, 255, 0.1);
+  color: #ffffff;
+
+  font-size: 15px;
+  font-weight: 600;
+
+  cursor: pointer;
+  transition: all 0.25s ease;
+}
+
+/* Hover */
+.google-button:hover:not(:disabled) {
+  background: rgba(255, 255, 255, 0.2);
+  transform: translateY(-2px);
+  box-shadow: 0 6px 14px rgba(0, 0, 0, 0.25);
+}
+
+/* Disabled */
+.google-button:disabled {
+  opacity: 0.7;
+  cursor: not-allowed;
+}
+
+/* Small screen tweak */
+@media (max-width: 480px) {
+  .login-card {
+    width: 100%;
+    max-width: 360px;
+    padding: 24px 20px 20px;
+  }
+}
+
+/* Apple sign-in button */
+.apple-button {
+  width: 100%;
+  height: 44px;
+
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  border-radius: 10px;
+  border: 1.5px solid rgba(255, 255, 255, 0.7);
+  background: rgba(255, 255, 255, 0.1);
+  color: #ffffff;
+
+  font-size: 15px;
+  font-weight: 600;
+
+  cursor: pointer;
+  transition: all 0.25s ease;
+}
+
+.apple-button:hover:not(:disabled) {
+  background: rgba(255, 255, 255, 0.2);
+  transform: translateY(-2px);
+  box-shadow: 0 6px 14px rgba(0, 0, 0, 0.25);
+}
+
+.apple-button:disabled {
+  opacity: 0.7;
+  cursor: not-allowed;
+}
+
+/* Phone sign-in button */
+.phone-button {
+  width: 100%;
+  height: 44px;
+
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  border-radius: 10px;
+  border: 1.5px solid rgba(100, 200, 150, 0.7);
+  background: rgba(100, 200, 150, 0.15);
+  color: #a8e6cf;
+
+  font-size: 15px;
+  font-weight: 600;
+
+  cursor: pointer;
+  transition: all 0.25s ease;
+}
+
+.phone-button:hover:not(:disabled) {
+  background: rgba(100, 200, 150, 0.28);
+  transform: translateY(-2px);
+  box-shadow: 0 6px 14px rgba(0, 0, 0, 0.25);
+}
+
+.phone-button:disabled {
+  opacity: 0.7;
+  cursor: not-allowed;
+}
+
+/* Phone modal overlay */
+.phone-modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.7);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+  backdrop-filter: blur(4px);
+}
+
+/* Phone modal card */
+.phone-modal {
+  width: 320px;
+  padding: 28px;
+  border-radius: 20px;
+  background: rgba(30, 30, 40, 0.95);
+  box-shadow: 0 20px 50px rgba(0, 0, 0, 0.5);
+  color: #ffffff;
+}
+
+.phone-modal-title {
+  margin: 0 0 20px;
+  font-size: 20px;
+  font-weight: 600;
+  text-align: center;
+}
+
+.phone-hint {
+  margin: 8px 0 0;
+  font-size: 12px;
+  color: rgba(255, 255, 255, 0.6);
+  text-align: center;
+}
+
+.phone-modal-buttons {
+  display: flex;
+  gap: 12px;
+  margin-top: 20px;
+}
+
+.phone-modal-cancel {
+  flex: 1;
+  height: 40px;
+  border-radius: 8px;
+  border: 1px solid rgba(255, 255, 255, 0.3);
+  background: transparent;
+  color: #ffffff;
+  font-size: 14px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.phone-modal-cancel:hover:not(:disabled) {
+  background: rgba(255, 255, 255, 0.1);
+}
+
+.phone-modal-cancel:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+.phone-modal-submit {
+  flex: 1;
+  height: 40px;
+  border-radius: 8px;
+  border: none;
+  background: rgba(255, 255, 255, 0.2);
+  color: #ffffff;
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.phone-modal-submit:hover:not(:disabled) {
+  filter: brightness(1.05);
+  transform: translateY(-1px);
+}
+
+.phone-modal-submit:disabled {
+  opacity: 0.7;
+  cursor: not-allowed;
+}

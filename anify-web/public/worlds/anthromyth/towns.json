@@ -1,0 +1,22 @@
+[
+    {
+        "id": "starter-town",
+        "name": "起始镇",
+        "background": "https://images.unsplash.com/photo-1519074069444-1ba4fff66d16?q=80&w=2544&auto=format&fit=crop",
+        "description": "一个宁静的小镇，冒险开始的地方。",
+        "initialPosition": {
+            "x": 0,
+            "y": 0
+        }
+    },
+    {
+        "id": "capital-city",
+        "name": "王都",
+        "background": "https://images.unsplash.com/photo-1515542622106-78bda8ba0e5b?q=80&w=2670&auto=format&fit=crop",
+        "description": "繁华的都市，充满了机遇与挑战。",
+        "initialPosition": {
+            "x": 0,
+            "y": 0
+        }
+    }
+]

@@ -1,0 +1,79 @@
+{
+  "dialogues": {
+    "fenne-main": {
+      "id": "fenne-main",
+      "character": "fenne",
+      "entryNode": "greeting",
+      "nodes": [
+        {
+          "id": "greeting",
+          "type": "npc",
+          "character": "fenne",
+          "content": "嘿，新来的冒险者！欢迎来到石洼落。",
+          "delay": 0,
+          "next": "intro"
+        },
+        {
+          "id": "intro",
+          "type": "npc",
+          "character": "fenne",
+          "content": "这里虽然是个小村子，但通往各个界域的冒险都从这里开始。",
+          "delay": 1500,
+          "next": "choice-1"
+        },
+        {
+          "id": "choice-1",
+          "type": "choice",
+          "options": [
+            {
+              "text": "能告诉我更多关于这个世界的事吗？",
+              "next": "world-info",
+              "favorability": 5
+            },
+            {
+              "text": "有什么任务可以做吗？",
+              "next": "quest-info",
+              "favorability": 0
+            },
+            {
+              "text": "我先四处看看。",
+              "next": "farewell",
+              "favorability": 0
+            }
+          ]
+        },
+        {
+          "id": "world-info",
+          "type": "npc",
+          "character": "fenne",
+          "content": "这里是六重界域，一个由灵韵推演和星枢源能维持运转的神秘世界...",
+          "delay": 0,
+          "next": "world-info-2"
+        },
+        {
+          "id": "world-info-2",
+          "type": "npc",
+          "character": "fenne",
+          "content": "阿斯忒曼圣庭是这里的统治中心，而我们安索弥斯则是充满活力的城邦。",
+          "delay": 2000,
+          "next": "choice-1"
+        },
+        {
+          "id": "quest-info",
+          "type": "npc",
+          "character": "fenne",
+          "content": "正好！露米妮娅之森最近出现了一些异常，需要有人去巡视一下。",
+          "delay": 0,
+          "action": "offer_quest:forest-patrol"
+        },
+        {
+          "id": "farewell",
+          "type": "npc",
+          "character": "fenne",
+          "content": "好的，有需要随时来找我！祝你冒险顺利！",
+          "delay": 0
+        }
+      ]
+    }
+  }
+}

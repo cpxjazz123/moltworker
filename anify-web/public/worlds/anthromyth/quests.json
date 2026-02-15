@@ -1,0 +1,60 @@
+{
+  "quests": [
+    {
+      "id": "welcome-to-swallow-hole",
+      "name": "初至石洼落",
+      "description": "与猎女芬恩交谈，了解石洼落村的情况。",
+      "category": "main",
+      "level": 1,
+      "giver": "fenne",
+      "location": "swallow-hole",
+      "objectives": [
+        {
+          "id": "obj-1",
+          "description": "与芬恩交谈",
+          "type": "talk",
+          "target": "fenne",
+          "count": 1
+        }
+      ],
+      "rewards": [
+        { "type": "exp", "amount": 100 },
+        { "type": "gold", "amount": 50 }
+      ],
+      "prerequisites": [],
+      "timeLimit": 0
+    },
+    {
+      "id": "forest-patrol",
+      "name": "森林巡逻",
+      "description": "帮助芬恩巡视露米妮娅之森的边界。",
+      "category": "side",
+      "level": 3,
+      "giver": "fenne",
+      "location": "luminia",
+      "objectives": [
+        {
+          "id": "obj-1",
+          "description": "探索露米妮娅之森",
+          "type": "explore",
+          "target": "luminia",
+          "count": 1
+        },
+        {
+          "id": "obj-2",
+          "description": "击败林间精灵",
+          "type": "kill",
+          "target": "forest-wisp",
+          "count": 5
+        }
+      ],
+      "rewards": [
+        { "type": "exp", "amount": 200 },
+        { "type": "gold", "amount": 100 },
+        { "type": "item", "id": "healing-potion", "amount": 3 }
+      ],
+      "prerequisites": ["welcome-to-swallow-hole"],
+      "timeLimit": 0
+    }
+  ]
+}

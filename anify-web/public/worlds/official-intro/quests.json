@@ -1,0 +1,40 @@
+{
+  "quests": [
+    {
+      "id": "tutorial-main",
+      "name": "初入冒险",
+      "description": "完成新手教程，了解基本操作。",
+      "category": "tutorial",
+      "level": 1,
+      "giver": "iris",
+      "location": "twilight-forest",
+      "objectives": [
+        {
+          "id": "obj-1",
+          "description": "与 Iris 对话",
+          "type": "talk",
+          "target": "iris",
+          "count": 1
+        },
+        {
+          "id": "obj-2",
+          "description": "查看装备面板",
+          "type": "custom",
+          "count": 1
+        },
+        {
+          "id": "obj-3",
+          "description": "进入暮光森林",
+          "type": "explore",
+          "target": "twilight-forest",
+          "count": 1
+        }
+      ],
+      "rewards": [
+        { "type": "exp", "amount": 50 }
+      ],
+      "prerequisites": [],
+      "timeLimit": 0
+    }
+  ]
+}

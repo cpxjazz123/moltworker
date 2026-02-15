@@ -1,0 +1,30 @@
+{
+  "id": "anthromyth",
+  "name": "六重界域",
+  "description": "阿斯忒曼圣庭与安索弥斯城邦所在的星轨圣境。通过灵韵推演、星枢源能和众光同辉维持运转的神秘世界。",
+  "version": "1.0.0",
+  "type": "campaign",
+  "coverImage": "/worlds/anthromyth/cover.png",
+  "available": true,
+  "defaultArea": "swallow-hole",
+  "defaultCharacter": "fenne",
+  "settings": {
+    "difficulty": "normal",
+    "permadeath": false,
+    "timeScale": 1.0
+  },
+  "features": {
+    "combat": true,
+    "exploration": true,
+    "dialogue": true,
+    "tutorial": false,
+    "crafting": true,
+    "trading": true
+  },
+  "requirements": {
+    "minLevel": 1,
+    "completedWorlds": [
+      "official-intro"
+    ]
+  }
+}

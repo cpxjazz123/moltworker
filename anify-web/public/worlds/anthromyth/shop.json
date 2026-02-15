@@ -1,0 +1,112 @@
+[
+    {
+        "id": "1",
+        "name": "Health Potion",
+        "icon": "🧪",
+        "description": "Restores 500 HP instantly.",
+        "price": 100,
+        "currency": "gold",
+        "category": "consumable",
+        "rarity": "common",
+        "stock": 99
+    },
+    {
+        "id": "2",
+        "name": "Mana Crystal",
+        "icon": "💎",
+        "description": "Restores 300 MP instantly.",
+        "price": 150,
+        "currency": "gold",
+        "category": "consumable",
+        "rarity": "common",
+        "stock": 50
+    },
+    {
+        "id": "3",
+        "name": "Phoenix Feather",
+        "icon": "🪶",
+        "description": "Auto-revive on death with 50% HP.",
+        "price": 500,
+        "currency": "gold",
+        "category": "consumable",
+        "rarity": "rare",
+        "stock": 10,
+        "hot": true
+    },
+    {
+        "id": "4",
+        "name": "Steel Longsword",
+        "icon": "⚔️",
+        "description": "A finely crafted steel sword. ATK +120",
+        "price": 2000,
+        "currency": "gold",
+        "category": "equipment",
+        "rarity": "common"
+    },
+    {
+        "id": "5",
+        "name": "Dragon Scale Armor",
+        "icon": "🛡️",
+        "description": "Armor made from dragon scales. DEF +200",
+        "price": 50,
+        "currency": "gem",
+        "category": "equipment",
+        "rarity": "epic",
+        "new": true
+    },
+    {
+        "id": "6",
+        "name": "Magic Ring",
+        "icon": "💍",
+        "description": "Increases magic damage by 15%.",
+        "price": 30,
+        "currency": "gem",
+        "category": "equipment",
+        "rarity": "rare"
+    },
+    {
+        "id": "7",
+        "name": "Iron Ore",
+        "icon": "🪨",
+        "description": "Basic crafting material.",
+        "price": 50,
+        "currency": "gold",
+        "category": "material",
+        "rarity": "common",
+        "stock": 200
+    },
+    {
+        "id": "8",
+        "name": "Enchant Essence",
+        "icon": "✨",
+        "description": "Used for reinforcing equipment.",
+        "price": 10,
+        "currency": "gem",
+        "category": "material",
+        "rarity": "rare",
+        "stock": 20
+    },
+    {
+        "id": "9",
+        "name": "Legendary Chest",
+        "icon": "📦",
+        "description": "Contains a random legendary item.",
+        "price": 100,
+        "currency": "gem",
+        "category": "special",
+        "rarity": "legendary",
+        "stock": 5,
+        "hot": true
+    },
+    {
+        "id": "10",
+        "name": "EXP Scroll",
+        "icon": "📜",
+        "description": "Double EXP for 1 hour.",
+        "price": 200,
+        "currency": "token",
+        "category": "special",
+        "rarity": "epic",
+        "discount": 20
+    }
+]

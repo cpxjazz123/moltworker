@@ -1,0 +1,84 @@
+{
+  "interactionPoints": [
+    {
+      "id": "point_1768018738971_2qy9k",
+      "position": [
+        -2.099991333071446,
+        -0.10371260620393397,
+        1.5508243485353927
+      ],
+      "triggerDistance": 1.5
+    },
+    {
+      "id": "point_1768018836850_pepfz",
+      "position": [
+        2.358184520301672,
+        -0.19622432076005833,
+        2.115053193397221
+      ],
+      "triggerDistance": 2.5,
+      "action": {
+        "type": "scene-switch",
+        "scene": {
+          "splatUrl": "https://oss.anify.ai/gs/aurora-crystal-healer.spz",
+          "wallsConfigUrl": "/assets/walls/test-scene.json",
+          "interactionPointsUrl": "/assets/walls/test-scene-interaction.json",
+          "floorConfigUrl": "/assets/walls/test-scene-floor.json"
+        }
+      }
+    },
+    {
+      "id": "point_1768018847893_48sqh",
+      "position": [
+        0.2953847151425346,
+        -0.009017005760682262,
+        -5.894966169892436
+      ],
+      "triggerDistance": 2.2,
+      "action": {
+        "type": "scene-switch",
+        "scene": {
+          "splatUrl": "https://oss.anify.ai/gs/aurora-crystal-healer-indoor.spz",
+          "wallsConfigUrl": "",
+          "interactionPointsUrl": "",
+          "floorConfigUrl": ""
+        }
+      }
+    },
+    {
+      "id": "point_1768022234756_w037s",
+      "position": [
+        0.112469807491758,
+        -0.38808934513300175,
+        -0.4974451914208329
+      ],
+      "imageUrl": "https://dev.anify.ai/Character_sample.png",
+      "imageScale": 0.5,
+      "triggerDistance": 1,
+      "action": {
+        "type": "dialog",
+        "dialog": {
+          "title": "标题",
+          "contentType": "text",
+          "text": "wwww"
+        }
+      }
+    },
+    {
+      "id": "point_1769034216377_lkz35",
+      "position": [
+        -2.0851908788733144,
+        -0.28412019060921867,
+        0.4024662735352509
+      ],
+      "action": {
+        "type": "dialog",
+        "dialog": {
+          "title": "标题",
+          "contentType": "text",
+          "text": "we"
+        }
+      }
+    }
+  ]
+}

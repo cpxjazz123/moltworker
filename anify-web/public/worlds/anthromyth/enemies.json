@@ -1,0 +1,88 @@
+{
+  "enemies": [
+    {
+      "id": "fire-core-giant",
+      "name": "炎核巨人",
+      "description": "派尔洛炼狱的守护者，由熔岩和炽能构成的巨大生物。",
+      "level": 25,
+      "health": 5000,
+      "attributes": {
+        "perception": 12,
+        "agility": 8,
+        "strength": 25,
+        "intelligence": 10,
+        "charisma": 5
+      },
+      "abilities": ["fire-slam", "molten-shield", "eruption"],
+      "drops": [
+        { "itemId": "fire-core-shard", "chance": 0.3 },
+        { "itemId": "molten-essence", "chance": 0.1 }
+      ],
+      "experience": 500,
+      "gold": 200
+    },
+    {
+      "id": "earth-soul-watcher",
+      "name": "地魂守望者",
+      "description": "岩衡古境的秩序维护者，由岩石和大地之力构成。",
+      "level": 15,
+      "health": 2000,
+      "attributes": {
+        "perception": 16,
+        "agility": 10,
+        "strength": 20,
+        "intelligence": 14,
+        "charisma": 8
+      },
+      "abilities": ["stone-fist", "earth-shield", "tremor"],
+      "drops": [
+        { "itemId": "earth-core", "chance": 0.25 },
+        { "itemId": "ancient-stone", "chance": 0.15 }
+      ],
+      "experience": 250,
+      "gold": 100
+    },
+    {
+      "id": "shadow-guardian",
+      "name": "影护者",
+      "description": "暮影秘境的边界守护者，能在暗影中自由穿梭。",
+      "level": 20,
+      "health": 1500,
+      "attributes": {
+        "perception": 20,
+        "agility": 22,
+        "strength": 12,
+        "intelligence": 18,
+        "charisma": 10
+      },
+      "abilities": ["shadow-strike", "void-step", "darkness-embrace"],
+      "drops": [
+        { "itemId": "shadow-essence", "chance": 0.2 },
+        { "itemId": "void-fragment", "chance": 0.05 }
+      ],
+      "experience": 350,
+      "gold": 150
+    },
+    {
+      "id": "forest-wisp",
+      "name": "林间精灵",
+      "description": "露米妮娅之森的小型生物，通常无害但会群体攻击。",
+      "level": 5,
+      "health": 200,
+      "attributes": {
+        "perception": 14,
+        "agility": 18,
+        "strength": 5,
+        "intelligence": 8,
+        "charisma": 12
+      },
+      "abilities": ["light-spark", "scatter"],
+      "drops": [
+        { "itemId": "wisp-dust", "chance": 0.5 },
+        { "itemId": "luminous-petal", "chance": 0.2 }
+      ],
+      "experience": 30,
+      "gold": 10
+    }
+  ]
+}

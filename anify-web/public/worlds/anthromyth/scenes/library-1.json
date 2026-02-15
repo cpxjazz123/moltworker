@@ -1,0 +1,48 @@
+{
+  "id": "library-1",
+  "name": "图书馆（一层）",
+  "description": "安静典雅的图书馆一层，陈列着常见的典籍",
+  "splatUrl": "https://oss.anify.ai/gs/Library-1.spz",
+  "spawnPosition": { "x": 0, "y": 0, "z": 5 },
+  "spawnRotation": 0,
+  "floorY": 0,
+  "cameraHeight": 0.88,
+  "groundY": -0.63,
+  "walls": [
+    {
+      "start": { "x": -18, "y": 0, "z": -18 },
+      "end": { "x": 18, "y": 0, "z": -18 },
+      "height": 4
+    },
+    {
+      "start": { "x": 18, "y": 0, "z": -18 },
+      "end": { "x": 18, "y": 0, "z": 18 },
+      "height": 4
+    },
+    {
+      "start": { "x": 18, "y": 0, "z": 18 },
+      "end": { "x": -18, "y": 0, "z": 18 },
+      "height": 4
+    },
+    {
+      "start": { "x": -18, "y": 0, "z": 18 },
+      "end": { "x": -18, "y": 0, "z": -18 },
+      "height": 4
+    }
+  ],
+  "interactionPoints": [
+    {
+      "id": "library-1-exit",
+      "name": "图书馆出口",
+      "position": { "x": 0, "y": 0, "z": -15 },
+      "radius": 3,
+      "icon": "🚪",
+      "action": {
+        "type": "open-map",
+        "canTravel": true
+      }
+    }
+  ],
+  "ambientLight": 0.6,
+  "skybox": "daylight"
+}

@@ -1,0 +1,270 @@
+@import "tailwindcss";
+@import "./styles/globals.css";
+
+@layer base {
+  :root {
+    --background: 0 0% 100%;
+    --foreground: 222.2 47.4% 11.2%;
+    --primary: 222.2 47.4% 11.2%;
+    --primary-foreground: 210 40% 98%;
+    --secondary: 210 40% 96%;
+    --secondary-foreground: 222.2 47.4% 11.2%;
+    --destructive: 0 84.2% 60.2%;
+    --destructive-foreground: 210 40% 98%;
+    --border: 214.3 31.8% 91.4%;
+    --input: 214.3 31.8% 91.4%;
+    --ring: 222.2 47.4% 11.2%;
+    --radius: 0.5rem;
+  }
+
+  .dark {
+    --background: 224 71% 4%;
+    --foreground: 213 31% 91%;
+    --primary: 210 40% 98%;
+    --primary-foreground: 222.2 47.4% 11.2%;
+    --secondary: 217.2 32.6% 17.5%;
+    --secondary-foreground: 210 40% 98%;
+    --destructive: 0 62.8% 30.6%;
+    --destructive-foreground: 210 40% 98%;
+  }
+}
+
+:root {
+  /* Glassmorphism Theme Colors */
+  --color-bg-dark: #0f0c15;
+  --color-bg-card: #1a1625;
+  --color-primary: #ffffff;
+  --color-primary-hover: rgba(255, 255, 255, 0.8);
+  --color-text-main: #e8e8e8;
+  --color-text-muted: #a0a0b0;
+  --color-accent: #9b4dca;
+  --color-border: rgba(255, 255, 255, 0.2);
+
+  /* Status Bar Colors */
+  --color-hp: #ff4444;
+  --color-mp: #4444ff;
+  --color-sp: #44ff44;
+
+  /* Fonts */
+  --font-heading: "Cinzel", serif;
+  --font-body: "Lato", sans-serif;
+
+  font-family: var(--font-body);
+  line-height: 1.6;
+  font-weight: 400;
+
+  color-scheme: dark;
+  color: var(--color-text-main);
+
+  font-synthesis: none;
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+html,
+body {
+  touch-action: pan-x pan-y;
+  overscroll-behavior: none;
+  margin: 0;
+  min-width: 320px;
+  height: 100vh;
+  height: 100dvh;
+  width: 100vw;
+}
+
+/* iOS Safari 兼容 */
+html.is-iphone-safari,
+html.is-iphone-safari body {
+  height: calc(var(--ios-lvh, 100lvh) + var(--ios-blur-offset, 120px)) !important;
+  overflow: auto !important;
+}
+
+html.is-iphone-safari.scroll-locked,
+html.is-iphone-safari.scroll-locked body {
+  overflow: hidden !important;
+  touch-action: none !important;
+}
+
+.app-viewport {
+  display: flex;
+  flex-direction: column;
+  height: 100dvh;
+  width: 100vw;
+  overflow: hidden;
+  position: relative;
+  flex-shrink: 0;
+}
+
+/* iOS Safari 26+ 需要更高的视口以适配透明地址栏 */
+html.is-iphone-safari .app-viewport {
+  height: calc(var(--ios-lvh, 100lvh) + var(--ios-blur-offset, 120px));
+}
+
+/* 应用内容层 - 包裹除背景外的所有内容 */
+.app-content {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  position: fixed;
+  z-index: 1;
+  border: 1px transparent solid;
+  height: 100dvh;
+  width: 100vw;
+  left: 0;
+  overflow: auto;
+}
+
+body.bg-transparent {
+  background: transparent !important;
+  background-image: none !important;
+}
+
+/* =====================================================
+   共享全局样式 - 被多个组件使用，不能迁移到 CSS Modules
+   ===================================================== */
+
+/* Home Container - 用于首页和聊天页面 */
+.home-container {
+  display: flex;
+  flex-direction: column;
+  height: 100vh; /* 回退 for iOS 14 */
+  height: 100dvh;
+  width: 100vw;
+  overflow: hidden;
+  position: relative;
+}
+
+/* Character Stage */
+.character-stage {
+  flex: 1;
+  display: flex;
+  justify-content: center;
+  align-items: flex-end;
+  position: relative;
+  overflow: hidden;
+  padding-bottom: calc(2rem + env(safe-area-inset-bottom));
+}
+
+/* Character Wrapper */
+.character-wrapper {
+  height: 90%;
+  display: flex;
+  justify-content: center;
+  align-items: flex-end;
+  z-index: 1;
+  animation: breathing 4s ease-in-out infinite;
+}
+
+@keyframes breathing {
+  0%,
+  100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-15px);
+  }
+}
+
+/* Card breathing animation - subtler for grid cards */
+@keyframes card-breathing {
+  0%,
+  100% {
+    transform: translateY(0) scale(1);
+  }
+  50% {
+    transform: translateY(-5px) scale(1.01);
+  }
+}
+
+.character-wrapper img {
+  height: 100%;
+  width: auto;
+  max-width: none;
+  object-fit: contain;
+  transition:
+    transform 0.3s ease,
+    filter 0.3s ease;
+}
+
+.character-wrapper img:hover {
+  transform: scale(1.02);
+  filter: drop-shadow(0 0 10px rgba(255, 255, 255, 0.4)) drop-shadow(0 0 25px rgba(255, 255, 255, 0.2)) brightness(1.03);
+}
+
+/* Bottom Nav - 用于 AppDock */
+.bottom-nav {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  display: flex;
+  justify-content: center;
+  padding-bottom: calc(1.5rem + env(safe-area-inset-bottom));
+  margin-left: 16px;
+  margin-right: 16px;
+  z-index: 200;
+  pointer-events: none;
+}
+
+@media (min-width: 640px) {
+  .bottom-nav {
+    margin-left: 32px;
+    margin-right: 32px;
+  }
+}
+
+@media (min-width: 768px) {
+  .bottom-nav {
+    margin-left: 64px;
+    margin-right: 64px;
+  }
+}
+
+@media (min-width: 1024px) {
+  .bottom-nav {
+    margin-left: 160px;
+    margin-right: 160px;
+  }
+}
+
+@media (min-width: 1280px) {
+  .bottom-nav {
+    margin-left: 240px;
+    margin-right: 240px;
+  }
+}
+
+/* Top Nav - 用于 GameDock */
+.top-nav {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  display: flex;
+  justify-content: center;
+  padding-top: 0px;
+  margin-top: 0px;
+  z-index: 200;
+  pointer-events: none;
+}
+
+.top-nav > * {
+  pointer-events: auto;
+}
+
+/* iPhone Safari 的底部存在安全区域，会导致padding叠加，视觉上高度过大 */
+html.is-iphone-safari .bottom-nav {
+  padding-bottom: calc(0.5rem + env(safe-area-inset-bottom));
+}
+
+/* 防止 iOS 输入框聚焦时的自动缩放 */
+html.is-iphone-safari input,
+html.is-iphone-safari textarea {
+  font-size: 16px;
+}
+
+.bottom-nav > * {
+  pointer-events: auto;
+}
+

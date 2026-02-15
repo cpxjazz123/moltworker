@@ -1,0 +1,28 @@
+{
+  "id": "official-intro",
+  "name": "暮光森林",
+  "description": "新手冒险者的起点。虹彩守护者 Iris 在此等候，她需要你的帮助来阻止结界的崩溃。",
+  "version": "1.0.0",
+  "type": "tutorial",
+  "coverImage": "/worlds/official-intro/cover.png",
+  "available": true,
+  "defaultArea": "twilight-forest",
+  "defaultCharacter": "iris",
+  "settings": {
+    "difficulty": "easy",
+    "permadeath": false,
+    "timeScale": 1.0
+  },
+  "features": {
+    "combat": false,
+    "exploration": true,
+    "dialogue": true,
+    "tutorial": true,
+    "crafting": false,
+    "trading": false
+  },
+  "requirements": {
+    "minLevel": 0,
+    "completedWorlds": []
+  }
+}

@@ -1,0 +1,55 @@
+[
+    {
+        "id": "t1",
+        "title": "Log in daily",
+        "description": "Log in to the game every day.",
+        "reward": {
+            "type": "gold",
+            "amount": 50
+        },
+        "progress": 1,
+        "total": 1,
+        "completed": true,
+        "claimed": false
+    },
+    {
+        "id": "t2",
+        "title": "Defeat 10 monsters",
+        "description": "Defeat any 10 monsters in the wild.",
+        "reward": {
+            "type": "exp",
+            "amount": 100
+        },
+        "progress": 3,
+        "total": 10,
+        "completed": false,
+        "claimed": false
+    },
+    {
+        "id": "t3",
+        "title": "Craft an item",
+        "description": "Successfully craft any item in the Forge.",
+        "reward": {
+            "type": "item",
+            "amount": 1,
+            "name": "Basic Material Box"
+        },
+        "progress": 0,
+        "total": 1,
+        "completed": false,
+        "claimed": false
+    },
+    {
+        "id": "t4",
+        "title": "Complete 3 Guild Quests",
+        "description": "Complete any 3 quests from the Adventurer's Guild.",
+        "reward": {
+            "type": "gem",
+            "amount": 10
+        },
+        "progress": 1,
+        "total": 3,
+        "completed": false,
+        "claimed": false
+    }
+]

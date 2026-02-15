@@ -8,3 +8,4 @@ FROM docker.io/cloudflare/sandbox:0.7.2
 # 如果有，说明基础镜像正常，问题在自定义层
 # 如果没有，说明是账户或服务配置问题
 # Build trigger: 2026-02-15-225504
+# Build: 1771156707

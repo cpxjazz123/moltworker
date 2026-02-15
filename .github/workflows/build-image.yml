@@ -44,6 +44,7 @@ jobs:
           TAG=$(echo ${{ github.sha }} | cut -c1-7)
           echo "Building image with tag: $TAG"
           echo "Target account: $CLOUDFLARE_ACCOUNT_ID"
-          npx wrangler containers build . -t moltbot-sandbox-moltbotsandbox:$TAG -p --account-id=$CLOUDFLARE_ACCOUNT_ID
+          export CLOUDFLARE_ACCOUNT_ID="b5ee1671e54d7c7fcf17e90b9ca7741a"
+          npx wrangler containers build . -t moltbot-sandbox-moltbotsandbox:$TAG -p
           echo "IMAGE_TAG=$TAG" >> $GITHUB_ENV
           echo "Successfully pushed image: moltbot-sandbox-moltbotsandbox:$TAG"

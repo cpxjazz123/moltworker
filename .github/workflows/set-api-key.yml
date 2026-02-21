@@ -1,0 +1,31 @@
+name: Set API Keys
+
+on:
+  workflow_dispatch:
+
+env:
+  CLOUDFLARE_API_TOKEN: ${{ secrets.CF_API_TOKEN }}
+  CLOUDFLARE_ACCOUNT_ID: b5ee1671e54d7c7fcf17e90b9ca7741a
+
+jobs:
+  set-secrets:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Install Wrangler
+        run: npm install -g wrangler@latest
+
+      - name: Set ANTHROPIC_API_KEY
+        run: |
+          echo "db2682f8a0024278a672f762ce36d7cd.RC8PtxIy5xdlh8Uj" | npx wrangler secret put ANTHROPIC_API_KEY
+
+      - name: Output success
+        run: |
+          echo "=========================================="
+          echo "API Keys have been set successfully!"
+          echo "Worker URL: https://moltbot-sandbox-v2.xsun.workers.dev"
+          echo "Token: 8f0b27db83932cc7986617782e9b54ee920b6dce8cc2e4d2b1671e6729a164a9"
+          echo "=========================================="

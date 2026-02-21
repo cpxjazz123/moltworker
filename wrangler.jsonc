@@ -45,7 +45,7 @@
     "command": "npm run build",
   },
   // Container configuration for the Moltbot sandbox
-  // Use existing image from Cloudflare registry to avoid Docker Hub timeout
+  // Custom image with OpenClaw, preserving base image's sandbox-mcp
   "containers": [
     {
       "class_name": "MoltbotSandbox",
@@ -64,11 +64,10 @@
   },
   "migrations": [
     {
-      "new_sqlite_classes": [
-        "MoltbotSandbox"
-      ],
-      "tag": "v1-rename",
-    },
+      "tag": "v1",
+      "new_classes": ["MoltbotSandbox"],
+      "new_sqlite_classes": ["MoltbotSandbox"]
+    }
   ],
   // R2 bucket for persistent storage (moltbot data, conversations, etc.)
   "r2_buckets": [

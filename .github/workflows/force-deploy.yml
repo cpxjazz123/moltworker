@@ -1,0 +1,39 @@
+name: Force Deploy Worker
+
+on:
+  workflow_dispatch:
+
+env:
+  CLOUDFLARE_API_TOKEN: ${{ secrets.CF_API_TOKEN }}
+  CLOUDFLARE_ACCOUNT_ID: b5ee1671e54d7c7fcf17e90b9ca7741a
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'npm'
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Build client
+        run: npm run build
+
+      - name: Deploy to Cloudflare Workers
+        run: npx wrangler deploy
+        continue-on-error: true
+
+      - name: Output URL
+        run: |
+          echo "=========================================="
+          echo "Worker URL: https://moltbot-sandbox.xsun.workers.dev"
+          echo "Token: 8f0b27db83932cc7986617782e9b54ee920b6dce8cc2e4d2b1671e6729a164a9"
+          echo "=========================================="

@@ -48,7 +48,7 @@
   // Custom image with OpenClaw, preserving base image's sandbox-mcp
   "containers": [
     {
-      "class_name": "MoltbotSandbox",
+      "class_name": "MoltbotSandboxV2",
       "image": "registry.cloudflare.com/b5ee1671e54d7c7fcf17e90b9ca7741a/moltbot-sandbox-moltbotsandbox:b239f16",
       "instance_type": "standard-1",
       "max_instances": 1,
@@ -57,7 +57,7 @@
   "durable_objects": {
     "bindings": [
       {
-        "class_name": "MoltbotSandbox",
+        "class_name": "MoltbotSandboxV2",
         "name": "Sandbox",
       },
     ],
@@ -65,7 +65,7 @@
   "migrations": [
     {
       "tag": "v1",
-      "new_classes": ["MoltbotSandbox"]
+      "new_classes": ["MoltbotSandboxV2"]
     }
   ],
   // R2 bucket for persistent storage (moltbot data, conversations, etc.)

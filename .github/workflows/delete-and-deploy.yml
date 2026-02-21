@@ -1,0 +1,52 @@
+name: Delete and Redeploy Worker
+
+on:
+  workflow_dispatch:
+
+env:
+  CLOUDFLARE_API_TOKEN: ${{ secrets.CF_API_TOKEN }}
+  CLOUDFLARE_ACCOUNT_ID: b5ee1671e54d7c7fcf17e90b9ca7741a
+
+jobs:
+  delete-and-deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'npm'
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Install Wrangler
+        run: npm install -g wrangler@latest
+
+      - name: Delete existing container application
+        run: |
+          echo "Attempting to delete existing container application..."
+          npx wrangler containers application delete moltbot-sandbox-moltbotsandbox --force || echo "Application may not exist or already deleted"
+
+      - name: Delete existing worker
+        run: |
+          echo "Attempting to delete existing worker..."
+          npx wrangler delete moltbot-sandbox --force || echo "Worker may not exist or already deleted"
+
+      - name: Build client
+        run: npm run build
+
+      - name: Deploy to Cloudflare Workers
+        run: npx wrangler deploy
+
+      - name: Output URL
+        run: |
+          echo "=========================================="
+          echo "Deployment complete!"
+          echo "Worker URL: https://moltbot-sandbox.xsun.workers.dev"
+          echo "Token: Use the previously set MOLTBOT_GATEWAY_TOKEN"
+          echo "=========================================="

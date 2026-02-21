@@ -1,0 +1,48 @@
+name: Set Gateway Token
+
+on:
+  workflow_dispatch:
+    inputs:
+      token_value:
+        description: 'Gateway token value (leave empty to auto-generate)'
+        required: false
+        default: ''
+
+env:
+  CLOUDFLARE_API_TOKEN: ${{ secrets.CF_API_TOKEN }}
+  CLOUDFLARE_ACCOUNT_ID: b5ee1671e54d7c7fcf17e90b9ca7741a
+
+jobs:
+  set-token:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Generate or use provided token
+        id: token
+        run: |
+          if [ -n "${{ github.event.inputs.token_value }}" ]; then
+            TOKEN="${{ github.event.inputs.token_value }}"
+          else
+            TOKEN=$(openssl rand -hex 32)
+          fi
+          echo "TOKEN=$TOKEN" >> $GITHUB_OUTPUT
+          echo "Generated token: ${TOKEN:0:8}..."
+
+      - name: Install Wrangler
+        run: npm install -g wrangler@latest
+
+      - name: Set MOLTBOT_GATEWAY_TOKEN secret
+        run: |
+          echo "${{ steps.token.outputs.TOKEN }}" | npx wrangler secret put MOLTBOT_GATEWAY_TOKEN
+
+      - name: Output access URL
+        run: |
+          echo "=========================================="
+          echo "Gateway token has been set successfully!"
+          echo "=========================================="
+          echo "Access URL:"
+          echo "https://moltbot-sandbox.xsun.workers.dev?token=${{ steps.token.outputs.TOKEN }}"
+          echo "=========================================="

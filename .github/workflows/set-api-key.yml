@@ -26,6 +26,6 @@ jobs:
         run: |
           echo "=========================================="
           echo "API Keys have been set successfully!"
-          echo "Worker URL: https://moltbot-sandbox-v2.xsun.workers.dev"
+          echo "Worker URL: https://moltbot-sandbox.xsun.workers.dev"
           echo "Token: 8f0b27db83932cc7986617782e9b54ee920b6dce8cc2e4d2b1671e6729a164a9"
           echo "=========================================="

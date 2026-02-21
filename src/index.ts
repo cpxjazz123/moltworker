@@ -47,7 +47,7 @@ function transformErrorMessage(message: string, host: string): string {
   return message;
 }
 
-export { Sandbox, Sandbox as MoltbotSandboxV2 };
+export { Sandbox, Sandbox as MoltbotSandbox };
 
 /**
  * Validate required environment variables.

@@ -1,0 +1,43 @@
+name: Deploy Worker
+
+on:
+  workflow_dispatch:
+  push:
+    branches: [main]
+    paths-ignore:
+      - '**.md'
+      - '.github/workflows/*.yml'
+
+env:
+  CLOUDFLARE_API_TOKEN: ${{ secrets.CF_API_TOKEN }}
+  CLOUDFLARE_ACCOUNT_ID: b5ee1671e54d7c7fcf17e90b9ca7741a
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'npm'
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Build client
+        run: npm run build
+
+      - name: Deploy to Cloudflare Workers
+        run: npx wrangler deploy
+
+      - name: Output URL
+        run: |
+          echo "=========================================="
+          echo "Deployment complete!"
+          echo "Worker URL: https://moltbot-sandbox.xsun.workers.dev"
+          echo "=========================================="
